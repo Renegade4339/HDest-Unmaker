@@ -1,2 +1,2 @@
 # HDest-Unmaker
-A Demonic Artifact for Hideous Destructor
+`ERROR: DESCRIPTION NOT FOUND.`
