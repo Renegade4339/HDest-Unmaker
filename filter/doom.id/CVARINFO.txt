@@ -1,0 +1,2 @@
+server bool hdunm_unmake = true;
+server bool hdunm_unmakearchon = true;

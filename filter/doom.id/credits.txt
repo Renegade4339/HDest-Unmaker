@@ -1,0 +1,16 @@
+Unmaker sprites by Midway
+Muzzle flash sprite by Potetobloke
+Original DSLASER by Midway. Grabbed from Doom 64 Retribution (thanks Zik).
+Gluon Gun Sounds by Valve Software
+(constant laser attack's main inspiration from the gluon gun)
+More firing sfx by Sorath, which came from Devil's Daggers, provided by a1337spy
+Guidance System grabbed from Lambda
+Beam stuff grabbed from Final Doomer (probably made by Yholl or Sgt. Shivers). shamelessly but unknown where it originally came from really.
+timaeusTestified, Sgt. Major Kiwi, Yoguruto-no-Kami, and ZikShadow for assisting me, provide sprites and sounds, especially the first three who gave suggestions.
+
+speaking of sounds...
+
+ARCHON SEE SOUND by Id Software and Eriance
+ARCHON SPRITES by Id Software, Midway, and Eriance
+Sprite edit by Eriance
+Bruiser Demon sounds (Active, pain and death) by Id Software and Blizzard

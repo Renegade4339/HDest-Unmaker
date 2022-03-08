@@ -1,0 +1,5 @@
+GameInfo
+{
+	AddEventHandlers = "HDUnmakerSpawner1Handler"
+	AddEventHandlers = "HDUnmakerSpawner2Handler"
+}

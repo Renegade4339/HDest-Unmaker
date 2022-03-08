@@ -1,0 +1,947 @@
+//this is where the hallucination stuff is handled
+//unlike the blursphere, the unmaker WILL visually
+//hallucinate you once you got the purple demon key.
+
+//base for the hallucination stuff
+class HallucinationActorBase : IdleDummy{
+	string hallucinationname;
+	property hallucinationname:hallucinationname;
+default{
+-solid
++ghost +lookallaround +ambush
++thruactors
+speed 20; height 3; mass 3; radius 3;
++floorclip
+tag " ";
+gravity 0x7fffffff; //lol
+-countkill
+maxdropoffheight 0x7fffffff;
+maxstepheight 0x7fffffff;
+HallucinationActorBase.hallucinationname "empty"; //lmao
+health 0x7fffffff; //not meant to be killed
+painchance 1; //once in pain, they'll disappear, if it's a fake monster that is
+}
+int timer;
+states{
+spawn:
+tnt1 a 1 nodelay a_look();
+loop;
+see:
+TNT1 A 0{
+timer=random(5,30);
+}
+wander:
+//TNT1 A 0 A_Jump(64,"Turn");
+TNT1 A 16 {
+if(timer<1)setstatelabel("check");
+else{
+ timer--;
+A_Chase();
+}
+}
+loop;
+
+//check if they're in a player's line of sight,
+//if they do, reset the timer and move again
+//otherwise,
+check:
+tnt1 a 1 A_JumpIfInTargetLOS("see",110,JLOSF_DEADNOJUMP);
+//take effect
+doeffect:
+tnt1 a 0;
+stop;
+}
+}
+
+class GeneralAudioHallucinator : HallucinationActorBase{
+default{
+HallucinationActorBase.hallucinationname "unmaker/hallucinations";
+-floorclip
++noclip
++nogravity
++float
+}
+states{
+spawn:
+tnt1 a 1 nodelay a_look();
+loop;
+see:
+TNT1 A 0{
+timer=random(5,30);
+}
+wander:
+//TNT1 A 0 A_Jump(64,"Turn");
+TNT1 A 16 {
+if(timer<1)setstatelabel("check");
+else{
+ timer--;
+A_Chase();
+}
+}
+loop;
+
+//check if they're in a player's line of sight,
+//if they do, reset the timer and move again
+//otherwise,
+check:
+tnt1 a 1 A_JumpIfInTargetLOS("see",110,JLOSF_DEADNOJUMP);
+//take effect
+doeffect:
+tnt1 a 0 A_StartSound(hallucinationname,CHAN_VOICE,CHANF_OVERLAP);
+stop;
+}
+}
+
+class FakeExplosionHallucination : HallucinationActorBase{
+states{
+spawn:
+tnt1 a 1 nodelay a_look();
+loop;
+see:
+TNT1 A 0{
+timer=random(5,30);
+}
+wander:
+//TNT1 A 0 A_Jump(64,"Turn");
+TNT1 A 16 {
+if(timer<1)setstatelabel("check");
+else{
+ timer--;
+A_Chase();
+}
+}
+loop;
+
+//check if they're in a player's line of sight,
+//if they do, reset the timer and move again
+//otherwise,
+check:
+tnt1 a 1 A_JumpIfInTargetLOS("see",110,JLOSF_DEADNOJUMP);
+//take effect
+doeffect:
+tnt1 a 0{
+distantnoise.make(self,"world/rocketfar");
+A_ChangeVelocity(1,0,0,CVF_RELATIVE);
+bnogravity=true;
+}
+		TNT1 AA 0 A_SpawnItemEx("HDExplosion",random(-1,1),random(-1,1),2,0,0,0,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS);
+		TNT1 A 2 A_SpawnItemEx("HDExplosion",0,0,0,
+			0,0,2,
+			0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS
+		);
+		TNT1 AAAAAAAAAAAAAAA 0 A_SpawnItemEx("BigWallChunk",0,0,1,
+			random(-1,6),random(-4,4),random(4,18),
+			random(-15,15),SXF_NOCHECKPOSITION
+		);
+	death2:
+		TNT1 AA 0 A_SpawnItemEx("HDSmoke",-1,0,1,
+			random(-2,3),random(-2,2),0,
+			random(-15,15),SXF_NOCHECKPOSITION
+		);
+		TNT1 A 21{
+			DistantQuaker.Quake(self,4,35,512,10);
+		}stop;
+}
+}
+
+class FakeMonsterBase : HDMobBase{
+default{
+-countkill
+health 0x7fffffff;
+}
+int timer; //fuck my life
+states{
+spawn:
+TNT1 A 0 nodelay{
+timer=random(5,30);
+}
+wander:
+TNT1 A 16 {
+A_Wander();
+if(timer<1)setstatelabel("doeffect");
+else timer--;
+}
+loop;
+
+doeffect:
+tnt1 a 0;
+stop;
+}
+}
+
+class FakeMonsterBaseBoss : HDMobBase{
+default{
++boss
+}
+}
+
+class FakeRoboball:SlowProjectile{
+	default{
+		+rockettrail
+		speed 72;
+		radius 5;height 5;
+		missileheight 3;
+		gravity 0;
+		seesound "weapons/rocklf";
+		scale 0.37;
+	}
+	override void ExplodeSlowMissile(line blockingline,actor blockingmobj){
+		DistantNoise.Make(self,"world/rocketfar");
+		A_SpawnChunks("BigWallChunk",240,300,900);
+
+		//destroy();return;
+		bmissile=false;
+		setstatelabel("death");
+	}
+	void A_SatanRoboRocketThrust2(){
+		if(fuel>0){
+			fuel--;
+			A_StartSound("weapons/rocklaunch",CHAN_AUTO,CHANF_OVERLAP,0.6);
+			if(
+				abs(vel.x)<500
+				&&abs(vel.y)<500
+			)A_ChangeVelocity(thrust.x,0,thrust.y,CVF_RELATIVE);
+		}else{
+			bnogravity=false; //+nogravity is automatically set and causes all subsequent GetGravity() to return 0
+			setstatelabel("spawn3");
+		}
+	}
+	int fuel;
+	vector2 thrust;
+	states{
+	spawn:
+		TNT1 A 0 nodelay{
+			A_StartSound("weapons/rocklf",CHAN_VOICE);
+			fuel=100;
+			thrust=(cos(pitch),-sin(pitch))*10;
+		}
+	spawn2:
+		MISL A 2 light("ROCKET") A_SatanRoboRocketThrust2();
+		loop;
+	spawn3:
+		MISL A 1 light("ROCKET"){
+			if(grav>=1.)A_SetTics(-1);
+			else{
+				gravity+=0.1;
+				grav=getgravity();
+			}
+		}
+		wait;
+	death:
+		TNT1 A 1{
+			vel.xy*=0.3;
+			for(int i=0;i<3;i++){
+				actor xp=spawn("HDExplosion",pos+(frandom(-2,2),frandom(-2,2),frandom(-2,2)),ALLOW_REPLACE);
+				xp.vel.z=frandom(1,3);
+			}
+			A_StartSound("world/explode");
+			DistantNoise.Make(self,"world/rocketfar");
+			DistantQuaker.Quake(self,4,35,512,10);
+		}
+		TNT1 A 0 A_SpawnChunks("HDSmokeChunk",random(3,4),2,8);
+		TNT1 AAAA 0 A_SpawnItemEx("HDSmoke",
+			random(-6,6),random(-6,6),random(-2,6),
+			random(-1,5),0,random(0,1),
+			random(-5,15)
+		);
+		TNT1 A 12 A_JumpIf(bmissilemore,"deathsmash");
+		stop;
+	deathsmash:
+		TNT1 A 0 A_SpawnChunks("HugeWallChunk",16,3,8);
+		TNT1 A 12;
+		stop;
+	}
+}
+
+class FakeCyberdemonSpawner : HallucinationActorBase{
+    states{
+spawn:
+tnt1 a 1 nodelay a_look();
+loop;
+see:
+TNT1 A 0{
+timer=random(5,30);
+}
+wander:
+//TNT1 A 0 A_Jump(64,"Turn");
+TNT1 A 16 {
+if(timer<1)setstatelabel("check");
+else{
+ timer--;
+A_Chase();
+}
+}
+loop;
+
+//check if they're in a player's line of sight,
+//if they do, reset the timer and move again
+//otherwise,
+check:
+tnt1 a 1 A_JumpIfInTargetLOS("see",110,JLOSF_DEADNOJUMP);
+//take effect
+        doeffect:
+        TNT1 A 0 A_SpawnItemEx("FakeCyberdemonHallucination",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
+        stop;
+    }
+}
+
+class FakeNPSpawner : HallucinationActorBase{
+    states{
+spawn:
+tnt1 a 1 nodelay a_look();
+loop;
+see:
+TNT1 A 0{
+timer=random(5,30);
+}
+wander:
+//TNT1 A 0 A_Jump(64,"Turn");
+TNT1 A 16 {
+if(timer<1)setstatelabel("check");
+else{
+ timer--;
+A_Chase();
+}
+}
+loop;
+
+//check if they're in a player's line of sight,
+//if they do, reset the timer and move again
+//otherwise,
+check:
+tnt1 a 1 A_JumpIfInTargetLOS("see",110,JLOSF_DEADNOJUMP);
+//take effect
+        doeffect:
+        TNT1 A 0 A_SpawnItemEx("FakeNinjaPirateHallucination",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
+        stop;
+    }
+}
+
+class FakeArchieSpawner : HallucinationActorBase{
+    states{
+spawn:
+tnt1 a 1 nodelay a_look();
+loop;
+see:
+TNT1 A 0{
+timer=random(5,30);
+}
+wander:
+//TNT1 A 0 A_Jump(64,"Turn");
+TNT1 A 16 {
+if(timer<1)setstatelabel("check");
+else{
+ timer--;
+A_Chase();
+}
+}
+loop;
+
+//check if they're in a player's line of sight,
+//if they do, reset the timer and move again
+//otherwise,
+check:
+tnt1 a 1 A_JumpIfInTargetLOS("see",110,JLOSF_DEADNOJUMP);
+//take effect
+        doeffect:
+        TNT1 A 0 A_SpawnItemEx("FakeArchvile",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
+        stop;
+    }
+}
+
+class FakeSatanball:HDFireball{
+	default{
+		+extremedeath
+		damagetype "balefire";
+		activesound "cyber/ballhum";
+		seesound "weapons/plasmaf";
+		gravity 0;
+		height 12;radius 12;
+		speed 50;
+		scale 0.4;
+	}
+	actor lite;
+	string pcol;
+	override void postbeginplay(){
+		super.postbeginplay();
+		lite=spawn("SatanBallLight",pos,ALLOW_REPLACE);lite.target=self;
+		pcol=(Wads.CheckNumForName("id",0)!=-1)?"55 ff 88":"55 88 ff";
+	}
+	states{
+	spawn:
+		BFS1 A 0{
+			if(stamina>40||!target||target.health<1)return;  
+			stamina++;
+			actor tgt=target.target;
+			if(getage()>144)vel+=(frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(0.1,-0.3));
+			if(tgt&&checksight(tgt)){
+				vel*=0.92;
+				vel+=(tgt.pos-pos+tgt.vel*10+(0,0,tgt.height)).unit()*10;
+			}
+		}
+		BFS1 ABAB 1 bright{
+			for(int i=0;i<10;i++){
+				A_SpawnParticle(pcol,SPF_RELATIVE|SPF_FULLBRIGHT,35,frandom(1,4),0,
+					frandom(-8,8)-5*cos(pitch),frandom(-8,8),frandom(0,8)+sin(pitch)*5,
+					frandom(-1,1),frandom(-1,1),frandom(1,2),
+					-0.1,frandom(-0.1,0.1),-0.05
+				);
+			}
+			scale=(1,1)*frandom(0.35,0.45);
+		}loop;
+	death:
+		BFE1 A 1 bright{
+			spawn("HDSmoke",pos,ALLOW_REPLACE);
+			A_StartSound("weapons/bfgx",CHAN_BODY,volume:0.4);
+			damagetype="hot";
+			bextremedeath=false;
+			if(lite)lite.args[3]=128;
+			DistantQuaker.Quake(self,2,35,512,10);
+		}
+		BFE1 BBCDDEEE 2 bright A_FadeOut(0.05);
+		stop;
+	}
+}
+
+class FakeCyberdemonHallucination : SatanRobo{
+default{
+seesound "cyber/sight";
+activesound "cyber/active";
+painsound "cyber/pain";
+deathsound "cyber/pain";
+
+		height 100;
+		radius 32;
+		+missilemore
+		+floorclip
+		+dontmorph
+		+avoidmelee +nofear +seeinvisible +nodropoff
+		-noradiusdmg -countkill
+		+noblooddecals
+		+hdmobbase.smallhead
+		+hdmobbase.biped
+		+hdmobbase.noshootablecorpse
+		-hdmobbase.chasealert
+		+hdmobbase.nodeathdrop
+		damagefactor "hot", 0.5;
+		damagefactor "cold", 0.5;
+		hdmobbase.shields 800;
+		gibhealth 900;
+		health 100;
+		mass 12000;
+		speed 15;
+		deathheight 110;
+		painchance 32;
+		painthreshold 200;
+}
+
+states{
+	see:
+		CYBR E 0{
+			if(health<1)setstatelabel("death");
+			bfrightening=true;
+		}
+		CYBR AA 2 A_HDChase();
+		CYBR B 5{
+			A_StartSound("cyber/walk",15);
+			A_HDChase();
+		}
+		CYBR C 5{
+			A_StartSound("cyber/hoof",16);
+			A_HDChase();
+		}
+		CYBR DD 2 A_HDChase();
+		CYBR E 0 A_Jump(16,"begone");
+		CYBR E 0 A_Jump(56,"see");
+		CYBR E 0 A_JumpIfTargetInLOS("missile",0);
+		loop;
+
+	inposition:
+		CYBR E 4{
+			A_Recoil(1);
+			bfrightening=true;
+			A_FaceTarget(12,12);
+		}
+		CYBR E 0 A_Stop();
+		CYBR E 0 A_JumpIf(health>1600,3);
+		CYBR EE 2 A_CyberGunSmoke();
+		CYBR E 4;
+		CYBR E 0 A_JumpIfTargetInLOS(2,90);
+		CYBR E 0 setstatelabel("missile");
+
+		CYBR E 0 A_JumpIf(health>1600,3);
+		CYBR EE 2 A_CyberGunSmoke();
+		CYBR E 4 A_FaceTarget(12,12);
+		CYBR E 0 A_JumpIf(health>1600,3);
+		CYBR EE 2 A_CyberGunSmoke();
+		CYBR E 0 A_JumpIf(!target,"fireend");
+		CYBR E 4 A_SetTics(target?clamp(int(distance2d(target)*0.0003),4,random(4,24)):4);
+		CYBR E 0 A_JumpIf(!target,"fireend");
+		CYBR A 0{
+			double dist=distance3d(target);
+
+			if(rockets>random(0,HDCB_ROCKETMAX*12/10)){
+				shottype="FakeRoboball";
+				rockets--;
+			}else shottype="FakeSatanBall";
+
+			if(dist<1024&&!random(0,7))setstatelabel("spray");
+			else if(dist<8192&&!random(0,2))setstatelabel("leadtarget");
+			else setstatelabel("directshots");
+		}
+
+	fireend:
+		CYBR E 0 A_Jump(64,"begone");
+		CYBR E 0 A_JumpIf(health>1600,3);
+		CYBR EE 2 A_CyberGunSmoke();
+		CYBR E 17;
+		---- A 0 setstatelabel("see");
+
+death:
+xdeath:
+pain:
+CYBR G 0 A_NoBlocking();
+CYBR G 4 A_Pain();
+begone:
+CYBR # 2 A_FadeOut(0.05);
+wait;
+}
+}
+
+class FakeNinjaPirateHallucination : FakeMonsterBase{
+Default{
+		monster;
+		renderstyle "translucent";
+		translation "64:79=24:44";
+		damagefactor "Balefire",0.3;
+		hdmobbase.shields 120;
+		tag "ninja pirate";
+		seesound "";
+		painsound "demon/pain";
+		deathsound "demon/death";
+		activesound "demon/active";
+		painchance 200; -countkill
+		height 50;
+		radius 18;
+		meleerange 48;
+		meleethreshold 512;
+		+hdmobbase.climber
+		+hdmobbase.climbpastdropoff
+		maxdropoffheight 64;
+		maxstepheight 32;
+		speed 16;
+		mass 300;
+		damage 0;
+	}
+
+	bool cloaked;
+	void Cloak(bool which=true){cloaked=which;}
+	override void postbeginplay(){
+		super.postbeginplay();
+		resize(frandom(0.9,1.1));
+		cloaked=false;
+		bbiped=bplayingid;
+	}
+	void A_BlurWander(bool dontlook=false){
+		A_HDWander(dontlook?0:CHF_LOOK);
+		A_SpawnItemEx("NinjaPirateBlurA",frandom(-2,2),frandom(-2,2),frandom(-2,2),flags:SXF_TRANSFERSPRITEFRAME);
+	}
+	void A_BlurChase(){
+		speed=getdefaultbytype(getclass()).speed;
+		A_HDChase();
+		A_SpawnItemEx("NinjaPirateBlurA",frandom(-2,2),frandom(-2,2),frandom(-2,2),flags:SXF_TRANSFERSPRITEFRAME);
+	}
+	void A_CloakedChase(){
+		bfrightened=health<90;
+		frame=(level.time&(1|2|4|8))>>2;
+		if(!(level.time&3)){
+			alpha=!random(0,7);
+			A_SetTranslucent(alpha,alpha?2:0);
+			if(!(level.time&4))GiveBody(1);
+		}
+		bshootable=alpha||random(0,15);
+		speed=(bshootable&&alpha)?5:getdefaultbytype(getclass()).speed;
+		A_Chase("melee",flags:CHF_NIGHTMAREFAST);
+
+		bool tsighted=target&&checksight(target);
+
+		if(
+			!random(0,15)
+			&&health>160
+			&&!tsighted
+		)setstatelabel("uncloak");
+		else if(
+			target
+			&&health<100
+			&&!random(0,63)
+		){
+			let rrr=spawn("DeadRingerNinjaPirate2",(pos.xy,floorz),ALLOW_REPLACE);
+			rrr.scale=scale;
+		}
+	}
+	void A_Uncloak(){
+		for(int i=0;i<3;i++)A_SpawnItemEx("HDSmoke",frandom(-1,1),frandom(-1,1),frandom(4,24),vel.x,vel.y,vel.z+frandom(1,3),0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,0);
+		cloaked=false;
+		bfrightened=false;
+		bsolid=true;
+		bshootable=true;
+		bnopain=false;
+		bshadow=false;
+		bnotarget=false;
+	}
+	states{
+	spawn:
+		TNT1 A 0 nodelay A_JumpIf(cloaked,"SpawnUnCloak");
+	spawn2:
+		TNT1 A 0 A_JumpIf(!bambush,"spawnwander");
+		TNT1 A 0 A_SpawnItemEx("HDSmoke",random(-1,1),random(-1,1),random(4,24),vel.x,vel.y,vel.z+random(1,3),0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,0);
+		TNT1 A 0 Cloak();
+	spawnstillcloaked:
+		TNT1 A 0 GiveBody(2);
+		TNT1 A 10 A_Look();
+		loop;
+	spawnwander:
+		SARG ABCD 8 A_BlurWander();
+		TNT1 A 0 A_Jump(48,"spawnstill");
+		TNT1 A 0 A_Jump(48,1);
+		loop;
+		TNT1 A 0 A_StartSound("demon/active",CHAN_VOICE);
+		TNT1 A 0 A_SpawnItemEx("HDSmoke",random(-1,1),random(-1,1),random(4,24),vel.x,vel.y,vel.z+random(1,3),0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,0);
+		TNT1 A 0 Cloak();
+	spawnwandercloaked:
+		TNT1 A 0 GiveBody(2);
+		TNT1 A 0 A_Look();
+		TNT1 A 7 A_Wander();
+		TNT1 A 0 A_Jump(12,1);
+		loop;
+		TNT1 A 0 A_SpawnItemEx("HDSmoke",random(-1,1),random(-1,1),random(4,24),vel.x,vel.y,vel.z+random(1,3),0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,0);
+		TNT1 A 0 A_UnCloak();
+		TNT1 A 0 A_StartSound("demon/active",CHAN_VOICE);
+	spawnstill:
+		SARG E 10 A_Jump(48,"spawnwander");
+		TNT1 A 0 A_Look();
+		SARG E 10 A_SetAngle(angle+random(-20,20));
+		SARG EEFF 10 A_Look();
+		loop;
+	spawnuncloak:
+		SARG G 0 A_Uncloak();
+		SARG B 0 A_SetTranslucent(0,0);
+		SARG B 2 A_SetTranslucent(0.2);
+		SARG B 2 A_SetTranslucent(0.4);
+		SARG B 2 A_SetTranslucent(0.6);
+		SARG B 2 A_SetTranslucent(0.8);
+		SARG B 2 A_SetTranslucent(1);
+		goto spawn2;
+	see:
+		TNT1 A 0 A_JumpIf(cloaked,"seecloaked");
+		TNT1 A 0{bnopain=false;}
+		goto seerunnin;
+	seerunnin:
+		SARG ABCD 4 A_BlurChase();
+		TNT1 A 0 Cloak(randompick(0,0,0,1));
+		---- A 0 setstatelabel("see");
+	seecloaked:
+		SARG A 1 A_CloakedChase();
+		loop;
+	uncloak:
+		SARG G 0 A_Uncloak();
+		SARG G 0 A_SetTranslucent(0,0);
+		SARG G 1 A_SetTranslucent(0.2);
+		SARG G 1 A_SetTranslucent(0.4);
+		SARG G 1 A_SetTranslucent(0.6);
+		SARG G 1 A_SetTranslucent(0.8);
+		SARG G 0 A_SetTranslucent(1);
+		---- A 0 setstatelabel("see");
+	melee:
+		SARG G 0 A_JumpIf(cloaked,"Uncloak");
+		SARG E 0 A_StartSound("demon/melee",CHAN_VOICE);
+		SARG E 4 A_FaceTarget();
+		SARG F 5 A_FaceTarget();
+		SARG F 0{
+			A_CustomMeleeAttack(random(0,1),"misc/bulletflesh","","bashing",true);
+
+			if(
+				target
+				&&distance3dsquared(target)<(50*50)
+				&&checkmove(0.5*(pos.xy+target.pos.xy),PCM_NOACTORS)
+				&&(random(0,3))
+			){
+				setstatelabel("latch");
+			}
+		}
+		SARG GGGG 0 A_CustomMeleeAttack(random(0,1),"misc/bulletflesh","","bashing",true);
+	meleeend:
+		SARG G 10{
+ A_NoBlocking();
+bnointeraction=true;
+}
+		stop;
+	latch:
+		SARG EEF 1{
+			A_FaceTarget();
+			A_ChangeVelocity(1,0,0,CVF_RELATIVE);
+			if(!random(0,19))A_Pain();else if(!random(0,9))A_StartSound("babuin/bite",CHAN_WEAPON);
+			if(!random(0,200)){
+				A_ChangeVelocity(-1,0,0,CVF_RELATIVE);
+				A_ChangeVelocity(-2,0,2,CVF_RELATIVE,AAPTR_TARGET);
+				setstatelabel("see");
+				return;
+			}
+			if(
+				!target
+				||target.health<1
+				||distance3d(target)>50
+			){
+					setstatelabel("meleeend");
+					return;
+			}
+			A_ScaleVelocity(0.2,AAPTR_TARGET);
+			A_ChangeVelocity(random(-1,1),random(-1,1),random(-1,1),0,AAPTR_TARGET);
+		}loop;
+	death:
+	xdeath:
+	pain:
+		SARG G 1 A_Jump(48,"DeadRinger");
+		SARG G 1 {bnopain=true;}
+		SARG G 3{
+ A_Pain();
+ A_NoBlocking();
+bnointeraction=true;
+}
+		stop;
+	deadringer:
+		SARG G 0 A_Scream();
+		SARG G 0 A_SpawnItemEx("DeadRingerNinjaPirate",0,0,0,vel.x,vel.y,vel.z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,0);
+		goto cloak;
+	cloak:
+		SARG GGG 0 A_SpawnItemEx("HDSmoke",frandom(-1,1),frandom(-1,1),frandom(4,24),vel.x,vel.y,vel.z+random(1,3),0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,0);
+		SARG G 0{
+			bnopain=true;
+			bfrightened=true;
+			bnotarget=true;
+			bshadow=true;
+			Cloak();
+		}
+		SARG G 1 A_SetTranslucent(0.8);
+		SARG G 1 A_SetTranslucent(0.4);
+		SARG G 1 A_SetTranslucent(0.2,2);
+		TNT1 AAAAA 0 A_Chase(null);
+		---- A 0 setstatelabel("see");
+	}
+}
+
+class FakeHeckFire:HDActor{
+	default{
+		projectile;
+		-nogravity
+		+hittracer
+		+slidesonwalls
+		+noexplodefloor
+		+seekermissile
+		+nodamagethrust
+		+bloodlessimpact
+		+bright
+		-noblockmap
+		gravity 0.6;
+		damagetype "hot";
+		renderstyle "add";
+		alpha 0.7;
+		speed 12;
+		radius 8;
+		height 16;
+	}
+	states{
+	spawn:
+		FIRE ABAB random(1,2);
+		TNT1 A 0 A_Gravity();
+		FIRE ABAB random(1,2) A_SeekerMissile(2,4);
+	see:
+		FIRE A 0 A_Setscale(randompick(-1,1)*frandom(0.8,1.2),frandom(0.8,1.2));
+		FIRE A random(1,2) A_StartSound("misc/firecrkl",CHAN_BODY,CHANF_OVERLAP);
+		FIRE B random(1,2) A_NoGravity();
+		FIRE A 0 A_Setscale(randompick(-1,1)*frandom(0.8,1.2),frandom(0.8,1.2));
+		FIRE ABAB random(1,2) A_SeekerMissile(4,8);
+		FIRE A 0 A_Setscale(randompick(-1,1)*frandom(0.8,1.2),frandom(0.8,1.2));
+		FIRE A random(1,2) A_Jump(24,2);
+		FIRE B random(1,2) A_Gravity();
+		loop;
+	death:
+	fade:
+		FIRE CDCDEFEFGH 2;
+		stop;
+	xdeath:
+		FIRE C 1{
+			A_StartSound("misc/firecrkl",CHAN_BODY,CHANF_OVERLAP);
+			A_Explode(3,2);
+		}
+		FIRE DCDCB 1{
+			if(!tracer)return;
+			A_Face(tracer);
+			A_Recoil(-speed*0.3);
+		}
+		FIRE CBABAB 1;
+		FIRE B 0 A_Jump(8,"see");
+		FIRE B 0{
+			A_StartSound("misc/firecrkl",CHAN_BODY,CHANF_OVERLAP);
+			if(tracer)bmissile=true;
+		}
+		goto see;
+	}
+}
+
+class FakeArchvile : FakeMonsterBase{
+	default{
+		mass 500;
+		maxtargetrange 896;
+		seesound "vile/sight";
+		painsound "vile/pain";
+		deathsound "vile/death";
+		activesound "vile/active";
+		meleesound "vile/stop";
+		tag "$CC_ARCH";
+		health 1;
+		
+		+shadow
+		+nofear
+		+seeinvisible
+		+frightening
+		+dontgib
+		+floorclip
+		+hdmobbase.doesntbleed
+		+hdmobbase.biped;
+		radius 16;
+		height 56;
+		scale 0.8;
+		renderstyle "normal";
+		bloodcolor "ff ff 44";
+		damagetype "hot";
+		speed 14;
+		painchance 1;
+	}
+	override void postbeginplay(){
+		super.postbeginplay();
+		if(
+			!bfriendly
+			&&hd_novilespam
+			&&A_CheckProximity("null","Necromancer",2018,2,CPXF_NOZ)
+		){
+			A_Die("mapmorph");
+			return;
+		}
+
+		voicepitch=1.+frandom(-1.,1.);
+
+		//spawn shards instead if no archvile sprites
+		if(Wads.CheckNumForName("VILER0",wads.ns_sprites,-1,false)<0){
+			for(int i=0;i<99;i++){
+				actor vvv;
+				[bmissilemore,vvv]=A_SpawnItemEx("BFGShard",
+					frandom(-3,3),frandom(-3,3),frandom(1,6),
+					frandom(0,30),0,frandom(1,12),frandom(0,360),
+					SXF_SETMASTER|SXF_TRANSFERPOINTERS|SXF_ABSOLUTEPOSITION
+				);
+				vvv.bfriendly=bfriendly;
+			}
+			destroy();
+			return;
+		}
+
+		bsmallhead=bplayingid;
+
+		resize(0.8,1.3);
+		A_GiveInventory("ImmunityToFire");
+	}
+states{
+	spawn:
+		VILE A 0 A_JumpIf(!bshootable,"painedandgone");
+		VILE AB 10 A_HDLook();
+		loop;
+	see:
+		VILE ABCDEF 5 A_HDChase();
+		VILE E 0 A_Jump(64,"pained");
+		loop;
+	missile:
+		VILE G 10 bright{
+			bnopain=false;
+			A_FaceTarget();
+		}
+		VILE H 2 bright light("CANF");
+		VILE HHH 3 bright light("CANF") A_SpawnProjectile("FakeHeckFire",16,0,frandom(-4,4));
+		TNT1 A 0 A_FaceTarget();
+		VILE IJ 4 bright light("CANF");
+		VILE K 4 bright light("HECK");
+		VILE KLL 2 bright light("HECK") A_SpawnProjectile("FakeHeckFire",16,0,8);
+		TNT1 A 0 A_FaceTarget();
+		VILE L 8 bright light("HELL");
+		VILE MN 2 bright light("HELL");
+		TNT1 A 0 A_FaceTarget();
+		VILE NOO 2 bright A_SpawnProjectile("FakeHeckFire",16,0,-8);
+		VILE PO 4 bright light("HELL");
+		VILE N 8 bright light("HELL");
+		VILE E 0 A_Jump(128,"pained");
+		---- A 0 setstatelabel("see");
+	pain:
+		VILE Q 20 light("HELL"){
+			DistantNoise.Make(self,"world/rocketfar");
+			A_SpawnItemEx("SpawnFire",0,0,28,flags:SXF_NOCHECKPOSITION);
+			A_Explode(46,196);
+
+			A_Quake(3,36,0,360);
+
+			A_Vocalize(painsound);
+			for(int i=0;i<3;i++)A_SpawnItemEx("BFGShard",
+				0,0,42,flags:SXF_SETMASTER|SXF_TRANSFERPOINTERS
+			);
+		}
+		VILE H 0 A_JumpIf(bfriendly,"see");
+	pained:
+		VILE A 1 A_Chase(null,null);
+		VILE AA 0 A_Chase(null,null);
+		VILE B 1 A_Chase(null,null);
+		VILE AA 0 A_Chase(null,null);
+		VILE C 1 A_Chase(null,null);
+		VILE AA 0 A_Chase(null,null);
+		VILE F 0 A_SetTranslucent(alpha-0.2,1);
+		VILE D 1 A_Chase(null,null);
+		VILE AA 0 A_Chase(null,null);
+		VILE E 1 A_Chase(null,null);
+		VILE AA 0 A_Chase(null,null);
+		VILE F 1 A_Chase(null,null);
+		VILE AA 0 A_Chase(null,null);
+		VILE F 0 A_SetTranslucent(alpha-0.2,1);
+		VILE F 0 A_JumpIf(alpha<0.1,"painedandgone");
+		loop;
+	painedandgone:
+		TNT1 A 0{
+A_NoBlocking();
+bnointeraction=true;
+}
+		stop;
+}
+}
+
+class HallucinationSpawner : IdleDummy{
+states{
+spawn:
+TNT1 A 0 nodelay A_Jump(110,"SpawnFakeCyber","SpawnFakeNP","SpawnFakeArchie","FakeExplosion");
+spawnsound:
+TNT1 A 0 a_spawnitemex("GeneralAudioHallucinator",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+stop;
+
+SpawnFakeCyber:
+TNT1 A 0 a_spawnitemex("FakeCyberdemonSpawner",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+stop;
+
+SpawnFakeNP:
+TNT1 A 0 a_spawnitemex("FakeNPSpawner",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+stop;
+
+SpawnFakeArchie:
+TNT1 A 0 a_spawnitemex("FakeArchieSpawner",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+stop;
+
+FakeExplosion:
+TNT1 A 0 a_spawnitemex("FakeExplosionHallucination",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+stop;
+}
+}

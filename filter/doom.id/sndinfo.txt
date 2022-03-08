@@ -1,0 +1,38 @@
+weapons/unmaker sounds/unmaker_fire_12.flac
+weapons/unmakerbeamstart sounds/egon_windup2.wav
+weapons/unmakerbeamloop sounds/egon_run3.wav
+weapons/unmakerbeamend sounds/egon_off1.wav
+
+$random weapons/unmaker2{unmaker/fire21 unmaker/fire22 unmaker/fire23 unmaker/fire24 unmaker/fire25}
+
+$random weapons/unmaker3{unmaker/fire31 unmaker/fire32 unmaker/fire33 unmaker/fire34 unmaker/fire35}
+
+unmaker/fire21 sounds/unmaker_shot_2_1.wav
+unmaker/fire22 sounds/unmaker_shot_2_2.wav
+unmaker/fire23 sounds/unmaker_shot_2_3.wav
+unmaker/fire24 sounds/unmaker_shot_2_4.wav
+unmaker/fire25 sounds/unmaker_shot_2_5.wav
+
+unmaker/fire31 sounds/unmaker_shot_3_1.wav
+unmaker/fire32 sounds/unmaker_shot_3_2.wav
+unmaker/fire33 sounds/unmaker_shot_3_3.wav
+unmaker/fire34 sounds/unmaker_shot_3_4.wav
+unmaker/fire35 sounds/unmaker_shot_3_5.wav
+
+//hallu stuff
+$random unmaker/hallucinations{ unmaker/hallu1 unmaker/hallu2 unmaker/hallu3 unmaker/hallu4 unmaker/hallu5 unmaker/hallu6 unmaker/hallu7 unmaker/hallu8 unmaker/hallu9 }
+$alias    unmaker/hallu1    imp/sight
+$alias    unmaker/hallu2    grunt/sight
+$alias    unmaker/hallu3    grunt/active
+$alias    unmaker/hallu4    demon/active
+$alias    unmaker/hallu5    baron/sight
+$alias    unmaker/hallu6    cyber/sight
+$alias    unmaker/hallu7    vile/raise
+$alias    unmaker/hallu8    imp/active
+$alias    unmaker/hallu9    vile/active
+
+//The Archon of Hell
+ubaron/sight sounds/ubaron_sight.ogg
+ubaron/active sounds/ubaron_active.flac
+ubaron/pain sounds/ubaron_pain.flac
+ubaron/death sounds/ubaron_death.flac

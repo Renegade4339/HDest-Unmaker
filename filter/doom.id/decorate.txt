@@ -1,0 +1,20 @@
+ACTOR UnmakerUpgrade1Icon : Inventory
+{
+	Game Doom
+	+UNDROPPABLE
+	Inventory.MaxAmount 1
+}
+
+ACTOR UnmakerUpgrade2Icon : Inventory
+{
+	Game Doom
+	+UNDROPPABLE
+	Inventory.MaxAmount 1
+}
+
+ACTOR UnmakerUpgrade3Icon : Inventory
+{
+	Game Doom
+	+UNDROPPABLE
+	Inventory.MaxAmount 1
+}

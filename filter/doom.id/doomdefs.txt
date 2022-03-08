@@ -1,0 +1,10 @@
+flickerlight ARCS1{
+	color 1 0.3 0.1
+	size 36
+	secondarysize 24
+	chance 0.5
+}
+
+object ArchonSpark{
+	frame BFE2D {light ARCS1}
+}

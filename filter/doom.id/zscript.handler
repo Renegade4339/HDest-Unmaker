@@ -1,0 +1,43 @@
+version "4.6"
+
+class HDUnmakerSpawner1Handler : EventHandler
+{
+	override void CheckReplacement(ReplaceEvent e)
+	{
+		if (!e.Replacement)
+		{
+			return;
+		}
+
+		switch (e.Replacement.GetClassName())
+		{
+			case 'RedSphere':
+				if (random[itemgrand]() <= 16)
+				{
+					e.Replacement = "HDUnmakerSpawner1";
+				}
+				break;
+		}
+	}
+	}
+
+class HDUnmakerSpawner2Handler : EventHandler
+{
+	override void CheckReplacement(ReplaceEvent e)
+	{
+		if (!e.Replacement)
+		{
+			return;
+		}
+
+		switch (e.Replacement.GetClassName())
+		{
+			case 'BFG9K':
+				if (random[weapongrand]() <= 8)
+				{
+					e.Replacement = "HDUnmakerSpawner2";
+				}
+				break;
+		}
+	}
+	}

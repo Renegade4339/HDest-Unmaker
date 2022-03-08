@@ -1,0 +1,5 @@
+Sprite "UMKRF0", 42, 33
+{
+	Offset -139, -81
+	Sprite "UMKRF0", 0, 0
+}
