@@ -5,7 +5,7 @@ class HDUnmakerSpawner1:IdleDummy{
 	//if you are, don't spawn either the Unmaker nor
 	//the keys but retain the spawner.
 	void A_CheckDoom64Lump(){
-	if(Wads.CheckNumForName("DARTA1",wads.ns_sprites,-1,false)<0);
+	if(Wads.CheckNumForName("gflma0",wads.ns_sprites,-1,false)<0);
 	setstatelabel("spawnsomethingelse");
 }
 
