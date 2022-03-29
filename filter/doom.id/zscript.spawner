@@ -7,7 +7,7 @@ class HDUnmakerSpawner1:IdleDummy{
 	bool playing64;
 	override void postbeginplay(){
 		super.postbeginplay();
-		playing64=(Wads.CheckNumForName("isuck",0)!=-1);
+		playing64=(Wads.CheckNumForName("DARTA1",wads.ns_sprites,-1,false);
 	}
 
 	states{
