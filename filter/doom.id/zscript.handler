@@ -12,7 +12,7 @@ class HDUnmakerSpawner1Handler : EventHandler
 		switch (e.Replacement.GetClassName())
 		{
 			case 'RedSphere':
-				if (random[itemgrand]() <= 16)
+				if (random[itemgrand]() <= 2)
 				{
 					e.Replacement = "HDUnmakerSpawner1";
 				}
@@ -33,7 +33,7 @@ class HDUnmakerSpawner2Handler : EventHandler
 		switch (e.Replacement.GetClassName())
 		{
 			case 'BFG9K':
-				if (random[weapongrand]() <= 8)
+				if (random[weapongrand]() <= 1)
 				{
 					e.Replacement = "HDUnmakerSpawner2";
 				}
