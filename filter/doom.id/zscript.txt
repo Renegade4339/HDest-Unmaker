@@ -1104,9 +1104,11 @@ Purple Demon Key - Has a chance to save you from the inevitable with or without 
 			}else setweaponstate("BeamEnd");
 			}
 		UMKR A 0{
-			if(frandom(0,0.1)){
+			if(invoker.weaponstatus[UNMS_SUBMAG]<1){
 				invoker.weaponstatus[UNMS_MAG]--;
-			}
+				invoker.weaponstatus[UNMS_SUBMAG]=10;
+			}else
+			invoker.weaponstatus[UNMS_SUBMAG]--;
 		}
 
 		UMKR A 0{
@@ -1134,9 +1136,12 @@ if(invoker.weaponstatus[UNMS_TICS]>105)A_Refire("Beam3");
 			}else setweaponstate("BeamEnd");
 			}
 		UMKR A 0{
-			if(frandom(0,0.1)){
+			if(invoker.weaponstatus[UNMS_SUBMAG]<1){
 				invoker.weaponstatus[UNMS_MAG]--;
-			}
+				invoker.weaponstatus[UNMS_SUBMAG]=10;
+			}else{
+			invoker.weaponstatus[UNMS_SUBMAG]--;
+		}
 				A_WeaponReady();
 		}
 		UMKR A 0 A_Refire("Beam3Loop");
@@ -1158,7 +1163,12 @@ if(invoker.weaponstatus[UNMS_TICS]>105)A_Refire("Beam3");
 		UMKR A 1;
 		UMKR A 0{
 			if(invoker.weaponstatus[UNMS_MAG]>0){
+			if(invoker.weaponstatus[UNMS_SUBMAG]<1){
 				invoker.weaponstatus[UNMS_MAG]--;
+				invoker.weaponstatus[UNMS_SUBMAG]=10;
+			}else{
+			invoker.weaponstatus[UNMS_SUBMAG]--;
+		}
 			}
 				
 		}
@@ -1592,6 +1602,7 @@ Now deprecated because of regenblues int converting into an inventory flag.
 			weaponstatus[UNMS_MAG]=50;
 			else weaponstatus[UNMS_MAG]=200;
 		weaponstatus[UNMS_CHAMBER]=2;
+		weaponstatus[UNMS_SUBMAG]=10;
 	}
 }
 enum unmakerstatus{
@@ -1607,6 +1618,7 @@ enum unmakerstatus{
 	UNMS_TICS=3,
 	UNMS_PISSING=4,
 	UNMS_GUIDED=5,
+	UNMS_SUBMAG=6,
 };
 
 class HarbingerSoul2:HDMobBase replaces HarbingerSoul{
