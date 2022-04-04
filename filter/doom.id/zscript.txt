@@ -1106,7 +1106,7 @@ Purple Demon Key - Has a chance to save you from the inevitable with or without 
 		UMKR A 0{
 			if(invoker.weaponstatus[UNMS_SUBMAG]<1){
 				invoker.weaponstatus[UNMS_MAG]--;
-				invoker.weaponstatus[UNMS_SUBMAG]=10;
+				invoker.weaponstatus[UNMS_SUBMAG]+=10;
 			}else
 			invoker.weaponstatus[UNMS_SUBMAG]--;
 		}
@@ -1138,7 +1138,7 @@ if(invoker.weaponstatus[UNMS_TICS]>105)A_Refire("Beam3");
 		UMKR A 0{
 			if(invoker.weaponstatus[UNMS_SUBMAG]<1){
 				invoker.weaponstatus[UNMS_MAG]--;
-				invoker.weaponstatus[UNMS_SUBMAG]=10;
+				invoker.weaponstatus[UNMS_SUBMAG]+=10;
 			}else{
 			invoker.weaponstatus[UNMS_SUBMAG]--;
 		}
@@ -1165,7 +1165,7 @@ if(invoker.weaponstatus[UNMS_TICS]>105)A_Refire("Beam3");
 			if(invoker.weaponstatus[UNMS_MAG]>0){
 			if(invoker.weaponstatus[UNMS_SUBMAG]<1){
 				invoker.weaponstatus[UNMS_MAG]--;
-				invoker.weaponstatus[UNMS_SUBMAG]=10;
+				invoker.weaponstatus[UNMS_SUBMAG]+=10;
 			}else{
 			invoker.weaponstatus[UNMS_SUBMAG]--;
 		}
