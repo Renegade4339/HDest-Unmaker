@@ -1,18 +1,8 @@
 //CheckLump("isuck")
 
 class HDUnmakerSpawner1:IdleDummy{
-	//Check if you're playing Doom 64 Consolation Prize
-	//if you are, don't spawn either the Unmaker nor
-	//the keys but retain the spawner.
-	bool playing64;
-	override void postbeginplay(){
-		super.postbeginplay();
-		playing64=(Wads.CheckNumForName("DARTA1",wads.ns_sprites,-1,true));
-	}
-
 	states{
 	spawn:
-	tnt1 a 0 nodelay{if(playing64)setstatelabel("spawnsomethingelse");}
 	tnt1 a 0 a_jump(128,"orange","purple","cyan");
 	unmaker:
 	tnt1 a 0 a_spawnitemex("HDUnmaker",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
@@ -36,10 +26,4 @@ class HDUnmakerSpawner1:IdleDummy{
 	}
 }
 
-class HDUnmakerSpawner2:HDUnmakerSpawner1{
-	states{
-	SpawnSomethingElse:
-	tnt1 a 0 a_spawnitemex("BFG9000",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
-	stop;
-	}
-}
+class HDUnmakerSpawner2:HDUnmakerSpawner1{}
