@@ -103,7 +103,7 @@ super.tick();
 }
 
 override void postbeginplay(){
-if(master)master.giveinventory("SuccessSignal",1);
+if(master)master.giveinventory("SpellSuccessSignal",1);
 if(!master)destroy();
 super.postbeginplay();
 }
@@ -148,7 +148,7 @@ super.tick();
 }
 
 override void postbeginplay(){
-if(master)master.giveinventory("SuccessSignal",1);
+if(master)master.giveinventory("SpellSuccessSignal",1);
 if(!master)destroy();
 super.postbeginplay();
 }
@@ -872,6 +872,7 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade3Icon",1,"EngageArmaggedon");
 		goto shoot;
 	EngageArmaggedon:
+		BOS4 M 1 A_TakeInventory("SpellSuccessSignal",1);
 		BOS4 F 4 A_FaceTarget(20,20);
 		BOS4 E 6;
 		BOS4 M 6;
@@ -881,7 +882,7 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		bnopain=true;
 		bnoblood=true;
 		castingarmageddon=true;
-		let meteor = spawn("MeteorSpawner",0,0,ceilingz-pos.z-24,ALLOW_REPLACE);
+		let meteor = spawn("MeteorSpawner",0,0,ceilingz-pos.z-24);
 		if(meteor){
 				meteor.master=self;
 				tracer=meteor;
@@ -948,7 +949,7 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 	CastDownMeteors:
 		BOS4 M 0{castingarmageddon=true;}
 		BOS4 M 0{
-		let meteor2 = spawn("MeteorSpawner2",0,0,ceilingz-pos.z-24,ALLOW_REPLACE);
+		let meteor2 = spawn("MeteorSpawner2",0,0,ceilingz-pos.z-24);
 		if(meteor2){
 				meteor2.master=self;
 				tracer=meteor2;
