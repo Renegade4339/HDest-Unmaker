@@ -103,7 +103,10 @@ super.tick();
 }
 
 override void postbeginplay(){
-if(master)master.giveinventory("SpellSuccessSignal",1);
+if(master){
+master.giveinventory("SpellSuccessSignal",1);
+A_Warp(AAPTR_MASTER,0,0,ceilingz-24,angle,WARPF_NOCHECKPOSITION);
+}
 if(!master)destroy();
 super.postbeginplay();
 }
@@ -148,7 +151,10 @@ super.tick();
 }
 
 override void postbeginplay(){
-if(master)master.giveinventory("SpellSuccessSignal",1);
+if(master){
+master.giveinventory("SpellSuccessSignal",1);
+A_Warp(AAPTR_MASTER,0,0,ceilingz-24,angle,WARPF_NOCHECKPOSITION);
+}
 if(!master)destroy();
 super.postbeginplay();
 }
@@ -882,7 +888,7 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		bnopain=true;
 		bnoblood=true;
 		castingarmageddon=true;
-		let meteor = spawn("MeteorSpawner",0,0,ceilingz-pos.z-24);
+		let meteor = spawn("MeteorSpawner",pos,ALLOW_REPLACE);
 		if(meteor){
 				meteor.master=self;
 				tracer=meteor;
@@ -949,7 +955,7 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 	CastDownMeteors:
 		BOS4 M 0{castingarmageddon=true;}
 		BOS4 M 0{
-		let meteor2 = spawn("MeteorSpawner2",0,0,ceilingz-pos.z-24);
+		let meteor = spawn("MeteorSpawner2",pos,ALLOW_REPLACE);
 		if(meteor2){
 				meteor2.master=self;
 				tracer=meteor2;
