@@ -955,7 +955,7 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 	CastDownMeteors:
 		BOS4 M 0{castingarmageddon=true;}
 		BOS4 M 0{
-		let meteor = spawn("MeteorSpawner2",pos,ALLOW_REPLACE);
+		let meteor2 = spawn("MeteorSpawner2",pos,ALLOW_REPLACE);
 		if(meteor2){
 				meteor2.master=self;
 				tracer=meteor2;
