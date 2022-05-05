@@ -96,9 +96,21 @@ master.giveinventory("SpellSuccessSignal",1);
 action void A_AcknowledgePainSignal(){
 A_JumpIfInventory("ArchonPainSignal",1,"death");
 }
+
+override void tick(){
+if(!master)destroy();
+super.tick();
+}
+
+override void postbeginplay(){
+if(master)master.giveinventory("SuccessSignal",1);
+if(!master)destroy();
+super.postbeginplay();
+}
+
 	states{
 	spawn:
-		TNT1 A 1 nodelay{ A_Look(); A_SendSuccessSignal();}
+		TNT1 A 1 nodelay A_Look();
 		stop;
 
 	see:
@@ -129,9 +141,21 @@ master.giveinventory("SpellSuccessSignal",1);
 action void A_AcknowledgePainSignal(){
 A_JumpIfInventory("ArchonPainSignal",1,"death");
 }
+
+override void tick(){
+if(!master)destroy();
+super.tick();
+}
+
+override void postbeginplay(){
+if(master)master.giveinventory("SuccessSignal",1);
+if(!master)destroy();
+super.postbeginplay();
+}
+
 	states{
 	spawn:
-		TNT1 A 0 nodelay{shotsleft=random(5,40); A_SendSuccessSignal();}
+		TNT1 A 0 nodelay{shotsleft=random(5,40);}
 		TNT1 A 1 A_Look();
 		stop;
 
@@ -508,6 +532,13 @@ class BaronUnmaker:PainMonster{
 	int timearmageddon;
 	int crittimearmageddon;
 
+	static bool IsSkyAbove(Actor a)
+	{
+		FLineTraceData data;
+		a.LineTrace(0, a.ceilingz - a.floorz + 64, -90, flags: TRF_NOSKY | TRF_THRUACTORS, data: data);
+		return data.HitType == data.TRACE_HitNone;
+	}
+
 	static void Spark(actor caller,int sparks=1,double sparkheight=10){
 		actor a;vector3 spot;
 		vector3 origin=caller.pos+(0,0,sparkheight);
@@ -663,7 +694,7 @@ class BaronUnmaker:PainMonster{
 
 	MissileSkullConfirmation:
 		BOS4 D 1 A_JumpIfCloser(128,"shoot");
-		BOS4 Q 1 A_JumpIfInventory("UnmakerUpgrade2Icon",1,"MissileSkull");
+		BOS4 # 0 A_JumpIfInventory("UnmakerUpgrade2Icon",1,"MissileSkull");
 		goto shoot;
 	MissileSkull:
 		BOS4 Q 12 A_FaceTarget(0,0);
@@ -702,7 +733,7 @@ class BaronUnmaker:PainMonster{
 		BOS4 Q 18;
 		goto see;
 	MissileMissile:
-		BOS4 D 1 A_JumpIfCloser(192,"shoot");
+		BOS4 # 0 A_JumpIfCloser(192,"shoot");
 		BOS4 Q 16 A_FaceTarget(20,20);
 		BOS4 Q 6 bright A_SpawnProjectile("UnmakerBeam",38,0,-2,CMF_AIMDIRECTION,pitch);
 		BOS4 Q 6 bright A_SpawnProjectile("UnmakerBeam",46,0,-9,CMF_AIMDIRECTION,pitch);
@@ -712,7 +743,7 @@ class BaronUnmaker:PainMonster{
 		---- A 0 setstatelabel("see");
 	MissileFuckYouConfirmation:
 		BOS4 D 1 A_JumpIfCloser(32,"shoot");
-		BOS4 F 1 A_JumpIfInventory("UnmakerUpgrade1Icon",1,"MissileFuckYou");
+		BOS4 F 0 A_JumpIfInventory("UnmakerUpgrade1Icon",1,"MissileFuckYou");
 		goto shoot;
 	MissileFuckYou:
 		BOS4 F 4 A_FaceTarget(20,20);
@@ -805,6 +836,16 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		goto see;
 
 	ArmageddonConfirmation:
+		UMKR A 0{
+				if (BaronUnmaker.IsSkyAbove(self))
+				{
+					SetStateLabel('ArmageddonConfirmationB');
+					return;
+				}
+		}
+		goto shoot;
+
+	ArmageddonConfirmationB:
 		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade1Icon",1,"ArmageddonConfirmation2A");
 		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade2Icon",1,"ArmageddonConfirmation2B");
 		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade3Icon",1,"ArmageddonConfirmation2C");
@@ -835,7 +876,18 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		BOS4 E 6;
 		BOS4 M 6;
 		BOS4 M 0 A_Jump(192,"CastDownMeteors");
-		BOS4 M 0{binvulnerable=true; bnopain=true; bnoblood=true; castingarmageddon=true;A_SpawnItemEx("MeteorSpawner", 0, 0, ceilingz - pos.z - 24, 0, 0, 0, flags: SXF_TRANSFERPOINTERS|SXF_SETMASTER);}
+		BOS4 M 0{
+		binvulnerable=true;
+		bnopain=true;
+		bnoblood=true;
+		castingarmageddon=true;
+		let meteor = spawn("MeteorSpawner",0,0,ceilingz-pos.z-24,ALLOW_REPLACE);
+		if(meteor){
+				meteor.master=self;
+				tracer=meteor;
+				setstatelabel("ArmageddonSpawnConfirmation");
+				}
+			}
 	ArmageddonSpawnConfirmation:
 		BOS4 M 1 A_JumpIfInventory("SpellSuccessSignal",1,"ArmageddonProcessing");
 		goto armageddonend;
@@ -866,18 +918,43 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		}wait;
 
 	finisharmageddon2:
-		BOS4 NN 1{crittimearmageddon--;BaronUnmaker.Spark(self,1,height-10);}
-		BOS4 O 1{crittimearmageddon--;BaronUnmaker.Spark(self,1,height-10);}
+		BOS4 NN 1{
+			crittimearmageddon--;
+			BaronUnmaker.Spark(self,1,height-10);
+			}
+		BOS4 O 1{
+			crittimearmageddon--;
+			BaronUnmaker.Spark(self,1,height-10);
+			}
 		goto unleashthearmageddon;
 	unleashthearmageddon:
-		BOS4 O 1{crittimearmageddon--;BaronUnmaker.Spark(self,1,height-10);}
-		BOS4 P 1{A_SpawnProjectile("ExplosionEffectUnmakerBaronHarmless",28,0,0,2,pitch);binvulnerable=false; bnopain=false; bnoblood=false;castingarmageddon=false;}
+		BOS4 O 1{
+			crittimearmageddon--;
+			BaronUnmaker.Spark(self,1,height-10);
+			}
+		BOS4 P 1{
+			A_SpawnProjectile(
+			"ExplosionEffectUnmakerBaronHarmless",
+			28,0,0,2,pitch
+			);
+			binvulnerable=false;
+			bnopain=false;
+			bnoblood=false;
+			castingarmageddon=false;
+			}
 		BOS4 P 10;
 		goto see;
 
 	CastDownMeteors:
-		BOS4 M 0{castingarmageddon=true;A_GiveInventory("CastingArmageddon",1);}
-		BOS4 M 0 A_SpawnItemEx("MeteorSpawner2", 0, 0, ceilingz - pos.z - 24, 0, 0, 0, flags: SXF_TRANSFERPOINTERS|SXF_SETMASTER);
+		BOS4 M 0{castingarmageddon=true;}
+		BOS4 M 0{
+		let meteor2 = spawn("MeteorSpawner2",0,0,ceilingz-pos.z-24,ALLOW_REPLACE);
+		if(meteor2){
+				meteor2.master=self;
+				tracer=meteor2;
+				setstatelabel("ArmageddonSpawnConfirmation2");
+				}
+			}
 	ArmageddonSpawnConfirmation2:
 		BOS4 M 1 A_JumpIfInventory("SpellSuccessSignal",1,"Wrath");
 		goto armageddonend;
@@ -885,7 +962,7 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		BOS4 M 6{
 			BaronUnmaker.Spark(self,1,height-10);
 			A_StartSound("weapons/bfgcharge",CHAN_AUTO);
-			if(!countinv("CastingArmageddon"))setstatelabel("armageddonend");
+			if(!tracer)setstatelabel("armageddonend");
 		}
 		wait;
 	armageddonend:
@@ -895,10 +972,14 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 					bnopain=false;
 					bnoblood=false;
 					castingarmageddon=false;
-					A_KillChildren();
-					A_GiveToChildren("ArchonPainSignal",1);
+		if(meteor){
+				meteor.destroy();
+				}
+		if(meteor2){
+				meteor2.destroy();
 				}
 			}
+		}
 		goto see;
 
 	pain:
@@ -908,8 +989,12 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 					bnopain=false;
 					bnoblood=false;
 					castingarmageddon=false;
-					A_KillChildren();
-					A_RadiusGive("ArchonPainSignal", 8124,RGF_CUBE|RGF_NOSIGHT, 1, species:"MeteorSpawners");
+		if(meteor){
+				meteor.destroy();
+				}
+		if(meteor2){
+				meteor2.destroy();
+				}
 				}
 			}
 		BOS4 H 0{
@@ -981,8 +1066,12 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 					bnopain=false;
 					bnoblood=false;
 					castingarmageddon=false;
-					A_KillChildren();
-					A_RadiusGive("ArchonPainSignal", 8124,RGF_CUBE|RGF_NOSIGHT, 1, species:"MeteorSpawners");
+		if(meteor){
+				meteor.destroy();
+				}
+		if(meteor2){
+				meteor2.destroy();
+				}
 				}
 			}
 		BOS4 H 0{
@@ -1031,10 +1120,7 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 			A_DropItem("HDCyanDemonKey");
 			A_TakeInventory("UnmakerUpgrade3Icon",1);
 		}
-	if(countinv("HDUnmaker")){
-			A_DropItem("HDUnmaker");
-			A_TakeInventory("HDUnmaker",1);
-		}	A_SpawnItemEx("ExplosionEffectUnmakerBaronHarmless",0,0,height/2,
+			A_DropItem("HDUnmaker"); //ALWAYS drop this	A_SpawnItemEx("ExplosionEffectUnmakerBaronHarmless",0,0,height/2,
 					0,
 					0,
 					0,
@@ -1057,8 +1143,12 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 					bnopain=false;
 					bnoblood=false;
 					castingarmageddon=false;
-					A_KillChildren();
-					A_RadiusGive("ArchonPainSignal", 8124,RGF_CUBE|RGF_NOSIGHT, 1, species:"MeteorSpawners");
+		if(meteor){
+				meteor.destroy();
+				}
+		if(meteor2){
+				meteor2.destroy();
+				}
 				}
 			}
 		BOS4 H 0{
@@ -1114,10 +1204,7 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 			A_DropItem("HDOrangeDemonKey");
 			A_TakeInventory("UnmakerUpgrade1Icon",1);
 		}
-	if(countinv("HDUnmaker")){
-			A_DropItem("HDUnmaker");
-			A_TakeInventory("HDUnmaker",1);
-		}
+			A_DropItem("HDUnmaker"); //ALWAYS drop this
 				A_SpawnItemEx("ExplosionEffectUnmakerBaron",0,0,height/2,
 					0,
 					0,
