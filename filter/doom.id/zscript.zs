@@ -121,7 +121,7 @@ super.postbeginplay();
 		TNT1 A 1 A_SpawnProjectile("ArmageddonBall",12,0,angle,CMF_AIMDIRECTION,pitch);
 		stop;
 	death:
-		TNT1 A 1{master.TakeInventory("CastingArmageddon",1);master.TakeInventory("ArchonPainSignal",1);}
+		TNT1 A 1{if(master){master.TakeInventory("CastingArmageddon",1);master.TakeInventory("ArchonPainSignal",1);}}
 		stop;
 	}
 }
@@ -168,7 +168,7 @@ super.postbeginplay();
 		TNT1 A 1{A_SpawnProjectile("UnmakerBallGuided",random(-24,24),random(-6,6),random(-10,10),CMF_AIMDIRECTION,pitch-random(-5,5)); shotsleft--;}
 		loop;
 	death:
-		TNT1 A 1{master.TakeInventory("CastingArmageddon",1);master.TakeInventory("ArchonPainSignal",1);}
+		TNT1 A 1{if(master){master.TakeInventory("CastingArmageddon",1);master.TakeInventory("ArchonPainSignal",1);}}
 		stop;
 	}
 }
@@ -972,11 +972,8 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 					bnopain=false;
 					bnoblood=false;
 					castingarmageddon=false;
-		if(meteor){
-				meteor.destroy();
-				}
-		if(meteor2){
-				meteor2.destroy();
+		if(tracer){
+				tracer.destroy();
 				}
 			}
 		}
@@ -989,11 +986,8 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 					bnopain=false;
 					bnoblood=false;
 					castingarmageddon=false;
-		if(meteor){
-				meteor.destroy();
-				}
-		if(meteor2){
-				meteor2.destroy();
+		if(tracer){
+				tracer.destroy();
 				}
 				}
 			}
@@ -1066,11 +1060,8 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 					bnopain=false;
 					bnoblood=false;
 					castingarmageddon=false;
-		if(meteor){
-				meteor.destroy();
-				}
-		if(meteor2){
-				meteor2.destroy();
+		if(tracer){
+				tracer.destroy();
 				}
 				}
 			}
@@ -1120,7 +1111,8 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 			A_DropItem("HDCyanDemonKey");
 			A_TakeInventory("UnmakerUpgrade3Icon",1);
 		}
-			A_DropItem("HDUnmaker"); //ALWAYS drop this	A_SpawnItemEx("ExplosionEffectUnmakerBaronHarmless",0,0,height/2,
+			A_DropItem("HDUnmaker"); //ALWAYS drop this
+	A_SpawnItemEx("ExplosionEffectUnmakerBaronHarmless",0,0,height/2,
 					0,
 					0,
 					0,
@@ -1143,11 +1135,8 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 					bnopain=false;
 					bnoblood=false;
 					castingarmageddon=false;
-		if(meteor){
-				meteor.destroy();
-				}
-		if(meteor2){
-				meteor2.destroy();
+		if(tracer){
+				tracer.destroy();
 				}
 				}
 			}
