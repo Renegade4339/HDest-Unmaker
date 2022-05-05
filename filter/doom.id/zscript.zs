@@ -892,6 +892,7 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		if(meteor){
 				meteor.master=self;
 				tracer=meteor;
+				A_GiveInventory("SpellSuccessSignal",1);
 				setstatelabel("ArmageddonSpawnConfirmation");
 				}
 			}
@@ -959,6 +960,7 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		if(meteor2){
 				meteor2.master=self;
 				tracer=meteor2;
+				A_GiveInventory("SpellSuccessSignal",1);
 				setstatelabel("ArmageddonSpawnConfirmation2");
 				}
 			}
