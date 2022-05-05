@@ -839,7 +839,7 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		UMKR A 0{
 				if (BaronUnmaker.IsSkyAbove(self))
 				{
-					SetStateLabel('ArmageddonConfirmationB');
+					SetStateLabel("ArmageddonConfirmationB");
 					return;
 				}
 		}
