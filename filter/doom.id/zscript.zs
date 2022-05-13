@@ -540,6 +540,10 @@ class BaronUnmaker:PainMonster{
 	int timearmageddon;
 	int crittimearmageddon;
 
+	bool gluttony;
+	bool pride;
+	bool lust;
+
 	static bool IsSkyAbove(Actor a)
 	{
 		FLineTraceData data;
@@ -702,7 +706,7 @@ class BaronUnmaker:PainMonster{
 
 	MissileSkullConfirmation:
 		BOS4 D 1 A_JumpIfCloser(128,"shoot");
-		BOS4 # 0 A_JumpIfInventory("UnmakerUpgrade2Icon",1,"MissileSkull");
+		BOS4 # 0{if(pride)setstatelabel("MissileSkull");}
 		goto shoot;
 	MissileSkull:
 		BOS4 Q 12 A_FaceTarget(0,0);
@@ -751,7 +755,7 @@ class BaronUnmaker:PainMonster{
 		---- A 0 setstatelabel("see");
 	MissileFuckYouConfirmation:
 		BOS4 D 1 A_JumpIfCloser(32,"shoot");
-		BOS4 F 0 A_JumpIfInventory("UnmakerUpgrade1Icon",1,"MissileFuckYou");
+		BOS4 F 0{if(gluttony)setstatelabel("MissileFuckYou");}
 		goto shoot;
 	MissileFuckYou:
 		BOS4 F 4 A_FaceTarget(20,20);
@@ -763,7 +767,7 @@ class BaronUnmaker:PainMonster{
 
 	MissilePissConfirmation:
 		UMKR A 0{if(pissleft<1)setstatelabel("shoot");}
-		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade3Icon",1,"MissilePiss");
+		UMKR A 0{if(lust)setstatelabel("MissilePiss");}
 		goto shoot;
 
 	MissilePiss:
@@ -854,31 +858,12 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		goto shoot;
 
 	ArmageddonConfirmationB:
-		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade1Icon",1,"ArmageddonConfirmation2A");
-		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade2Icon",1,"ArmageddonConfirmation2B");
-		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade3Icon",1,"ArmageddonConfirmation2C");
+		UMKR A 0{
+				if(gluttony&&pride&&lust)
+				setstatelabel("EngageArmaggedon");
+			}
 		goto shoot;
-	ArmageddonConfirmation2A:
-		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade2Icon",1,"ArmageddonConfirmation3C");
-		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade3Icon",1,"ArmageddonConfirmation3B");
-		goto shoot;
-	ArmageddonConfirmation2B:
-		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade1Icon",1,"ArmageddonConfirmation3C");
-		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade3Icon",1,"ArmageddonConfirmation3A");
-		goto shoot;
-	ArmageddonConfirmation2C:
-		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade1Icon",1,"ArmageddonConfirmation3B");
-		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade2Icon",1,"ArmageddonConfirmation3A");
-		goto shoot;
-	ArmageddonConfirmation3A:
-		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade1Icon",1,"EngageArmaggedon");
-		goto shoot;
-	ArmageddonConfirmation3B:
-		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade2Icon",1,"EngageArmaggedon");
-		goto shoot;
-	ArmageddonConfirmation3C:
-		UMKR A 0 A_JumpIfInventory("UnmakerUpgrade3Icon",1,"EngageArmaggedon");
-		goto shoot;
+
 	EngageArmaggedon:
 		BOS4 M 1 A_TakeInventory("SpellSuccessSignal",1);
 		BOS4 F 4 A_FaceTarget(20,20);
@@ -992,9 +977,6 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 	pain:
 		BOS4 P 0{
 						if(castingarmageddon){
-					binvulnerable=false;
-					bnopain=false;
-					bnoblood=false;
 					castingarmageddon=false;
 		if(tracer){
 				tracer.destroy();
@@ -1066,9 +1048,6 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		---- A 0 A_Quake(2,64,0,600);
 		BOS4 P 0{
 						if(castingarmageddon){
-					binvulnerable=false;
-					bnopain=false;
-					bnoblood=false;
 					castingarmageddon=false;
 		if(tracer){
 				tracer.destroy();
@@ -1109,17 +1088,14 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 				);
 		}
 			
-	if(countinv("UnmakerUpgrade1Icon")){
+	if(gluttony){
 			A_DropItem("HDOrangeDemonKey");
-			A_TakeInventory("UnmakerUpgrade1Icon",1);
 		}
-	if(countinv("UnmakerUpgrade2Icon")){
+	if(pride){
 			A_DropItem("HDPurpleDemonKey");
-			A_TakeInventory("UnmakerUpgrade2Icon",1);
 		}
-	if(countinv("UnmakerUpgrade3Icon")){
+	if(lust){
 			A_DropItem("HDCyanDemonKey");
-			A_TakeInventory("UnmakerUpgrade3Icon",1);
 		}
 			A_DropItem("HDUnmaker"); //ALWAYS drop this
 	A_SpawnItemEx("ExplosionEffectUnmakerBaronHarmless",0,0,height/2,
@@ -1141,9 +1117,6 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		---- A 0 A_Quake(2,64,0,600);
 		BOS4 P 0{
 						if(castingarmageddon){
-					binvulnerable=false;
-					bnopain=false;
-					bnoblood=false;
 					castingarmageddon=false;
 		if(tracer){
 				tracer.destroy();
@@ -1183,25 +1156,14 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 					0,SXF_NOCHECKPOSITION|SXF_ABSOLUTEMOMENTUM
 				);
 		}
-	if(countinv("UnmakerUpgrade1Icon")){
+	if(gluttony){
 			A_DropItem("HDOrangeDemonKey");
-			A_TakeInventory("UnmakerUpgrade1Icon",1);
-		}else
-	if(countinv("UnmakerUpgrade2Icon")){
+		}
+	if(pride){
 			A_DropItem("HDPurpleDemonKey");
-			A_TakeInventory("UnmakerUpgrade2Icon",1);
-		}else
-	if(countinv("UnmakerUpgrade3Icon")){
+		}
+	if(lust){
 			A_DropItem("HDCyanDemonKey");
-			A_TakeInventory("UnmakerUpgrade3Icon",1);
-		}else
-	if(countinv("UnmakerUpgrade2Icon")){
-			A_DropItem("HDPurpleDemonKey");
-			A_TakeInventory("UnmakerUpgrade2Icon",1);
-		}else
-	if(countinv("UnmakerUpgrade1Icon")){
-			A_DropItem("HDOrangeDemonKey");
-			A_TakeInventory("UnmakerUpgrade1Icon",1);
 		}
 			A_DropItem("HDUnmaker"); //ALWAYS drop this
 				A_SpawnItemEx("ExplosionEffectUnmakerBaron",0,0,height/2,
