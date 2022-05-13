@@ -7,7 +7,7 @@ class UnmadeRifleman:ReallyDeadRifleman{
 	}
 }
 
-class HDUnmakerSpawnerUN:IdleDummy{
+class HDUnmakerSpawnerUN:HDWeapon{
 	states{
 	spawn:
 	tnt1 a 1 nodelay{
