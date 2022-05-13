@@ -7,45 +7,39 @@ class UnmadeRifleman:ReallyDeadRifleman{
 	}
 }
 
-class HDUnmakerSpawner1:IdleDummy{
+class HDUnmakerSpawnerUN:IdleDummy{
 	states{
 	spawn:
-	tnt1 a 0 nodelay a_jump(128,"orange","purple","cyan","SpawnArchon");
-	unmaker:
-	tnt1 a 0 a_spawnitemex("HDUnmaker",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
-	stop;
-
-	orange:
-	tnt1 a 0 a_spawnitemex("hdorangedemonkey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
-	stop;
-
-	purple:
-	tnt1 a 0 a_spawnitemex("HDPurpleDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
-	stop;
-
-	cyan:
-	tnt1 a 0 a_spawnitemex("HDCyanDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
-	stop;
-
-	SpawnArchon:
-	tnt1 a 0{
-		let corpse = spawn("UnmadeRifleman",pos,ALLOW_REPLACE);
-		if(corpse){
-		let archon = spawn("BaronUnmaker",corpse.pos,ALLOW_REPLACE);
-			if(archon){
-			archon.translation=corpse.translation;
-			if(!random(0,1))archon.A_GiveInventory("UnmakerUpgrade1Icon",1);
-			if(!random(0,3))archon.A_GiveInventory("UnmakerUpgrade2Icon",1);
-			if(!random(0,7))archon.A_GiveInventory("UnmakerUpgrade3Icon",1);
-			}
-		}
-		a_spawnitemex("SquadSummoner",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
-		}
+	tnt1 a 0 nodelay a_spawnitemex("HDUnmaker",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
 	stop;
 	}
 }
 
-class HDUnmakerSpawner2:HDUnmakerSpawner1{
+class HDUnmakerSpawnerGL:IdleDummy{
+	states{
+	spawn:
+	tnt1 a 0 nodelay a_spawnitemex("HDOrangeDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+	stop;
+	}
+}
+
+class HDUnmakerSpawnerPR:IdleDummy{
+	states{
+	spawn:
+	tnt1 a 0 nodelay a_spawnitemex("HDPurpleDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+	stop;
+	}
+}
+
+class HDUnmakerSpawnerLU:IdleDummy{
+	states{
+	spawn:
+	tnt1 a 0 nodelay a_spawnitemex("HDCyanDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+	stop;
+	}
+}
+
+class HDUnmakerSpawnerAR:IdleDummy{
 	states{
 		SpawnArchon:
 			tnt1 a 0{
@@ -59,7 +53,7 @@ class HDUnmakerSpawner2:HDUnmakerSpawner1{
 					if(!random(0,7))archon.A_GiveInventory("UnmakerUpgrade3Icon",1);
 					}
 				}
-				a_spawnitemex("BFG9K",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+				a_spawnitemex("SquadSummoner",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
 			}
 	stop;
 	}
