@@ -14,7 +14,7 @@ class HDUnmakerSpawner1Handler : EventHandler
 			case 'RedSphere':
 				if (random[itemgrand]() <= 4)
 				{
-					e.Replacement = "HDUnmakerSpawnerAR";
+					e.Replacement = "HDUnmakerEmpty";
 				}else
 				if (random[itemgrand]() <= 2)
 				{
@@ -63,7 +63,7 @@ class HDUnmakerSpawner2Handler : EventHandler
 				}else
 				if (random[itemgrand]() <= 1)
 				{
-					e.Replacement = "HDUnmakerSpawnerUN";
+					e.Replacement = "HDUnmakerEmpty";
 				}
 				break;
 		}
