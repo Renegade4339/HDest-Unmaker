@@ -10,7 +10,10 @@ class UnmadeRifleman:ReallyDeadRifleman{
 class HDUnmakerSpawnerUN:IdleDummy{
 	states{
 	spawn:
-	tnt1 a 0 nodelay a_spawnitemex("HDUnmaker",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+	tnt1 a 1 nodelay{
+		let unmaker = spawn("HDUnmaker",pos,ALLOW_REPLACE);
+		if(unmaker)unmaker.weaponstatus[UNMS_MAG]=0;
+		}
 	stop;
 	}
 }
@@ -18,7 +21,7 @@ class HDUnmakerSpawnerUN:IdleDummy{
 class HDUnmakerSpawnerGL:IdleDummy{
 	states{
 	spawn:
-	tnt1 a 0 nodelay a_spawnitemex("HDOrangeDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+	tnt1 a 1 nodelay a_spawnitemex("HDOrangeDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
 	stop;
 	}
 }
@@ -26,7 +29,7 @@ class HDUnmakerSpawnerGL:IdleDummy{
 class HDUnmakerSpawnerPR:IdleDummy{
 	states{
 	spawn:
-	tnt1 a 0 nodelay a_spawnitemex("HDPurpleDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+	tnt1 a 1 nodelay a_spawnitemex("HDPurpleDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
 	stop;
 	}
 }
@@ -34,7 +37,7 @@ class HDUnmakerSpawnerPR:IdleDummy{
 class HDUnmakerSpawnerLU:IdleDummy{
 	states{
 	spawn:
-	tnt1 a 0 nodelay a_spawnitemex("HDCyanDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+	tnt1 a 1 nodelay a_spawnitemex("HDCyanDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
 	stop;
 	}
 }
@@ -42,7 +45,7 @@ class HDUnmakerSpawnerLU:IdleDummy{
 class HDUnmakerSpawnerAR:IdleDummy{
 	states{
 		SpawnArchon:
-			tnt1 a 0{
+			tnt1 a 1 nodelay{
 				let corpse = spawn("UnmadeRifleman",pos,ALLOW_REPLACE);
 				if(corpse){
 				let archon = spawn("BaronUnmaker",corpse.pos,ALLOW_REPLACE);
