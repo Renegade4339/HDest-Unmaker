@@ -174,7 +174,7 @@ A_GiveInventory("IsMoving",99);
 		stop;
 	}
 
-	const thcol="\cd";
+	const thcol="\cg";
 	static string Threat(){
 		string psss=Wads.ReadLump(Wads.CheckNumForName("threats",0));
 		array<string> pss;pss.clear();
