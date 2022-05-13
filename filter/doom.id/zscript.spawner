@@ -7,13 +7,6 @@ class UnmadeRifleman:ReallyDeadRifleman{
 	}
 }
 
-class HDUnmakerEmpty:HDUnmaker{
-	override void postbeginplay(){
-	suepr.postbeginplay();
-	invoker.weaponstatus[UNMS_MAG]=0;
-	}
-}
-
 class HDUnmakerSpawnerAR:IdleDummy{
 	states{
 		SpawnArchon:
