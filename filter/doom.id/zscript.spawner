@@ -1,5 +1,12 @@
 //CheckLump("isuck")
 
+class UnmadeRifleman:ReallyDeadRifleman{
+	override void postbeginplay(){
+		super.postbeginplay();
+		bodydamage+=10000;
+	}
+}
+
 class HDUnmakerSpawner1:IdleDummy{
 	states{
 	spawn:
@@ -22,9 +29,8 @@ class HDUnmakerSpawner1:IdleDummy{
 
 	SpawnArchon:
 	tnt1 a 0{
-		let corpse = spawn("ReallyDeadRifleman",pos,ALLOW_REPLACE);
+		let corpse = spawn("UnmadeRifleman",pos,ALLOW_REPLACE);
 		if(corpse){
-		corpse.bodydamage+=10000;
 		let archon = spawn("BaronUnmaker",corpse.pos,ALLOW_REPLACE);
 			if(archon){
 			archon.translation=corpse.translation;
@@ -43,9 +49,8 @@ class HDUnmakerSpawner2:HDUnmakerSpawner1{
 	states{
 		SpawnArchon:
 			tnt1 a 0{
-				let corpse = spawn("ReallyDeadRifleman",pos,ALLOW_REPLACE);
+				let corpse = spawn("UnmadeRifleman",pos,ALLOW_REPLACE);
 				if(corpse){
-				corpse.bodydamage+=10000;
 				let archon = spawn("BaronUnmaker",corpse.pos,ALLOW_REPLACE);
 					if(archon){
 					archon.translation=corpse.translation;
