@@ -1642,8 +1642,8 @@ enum unmakerstatus{
 
 class HDUnmakerEmpty:HDUnmaker{
 	override void postbeginplay(){
-	suepr.postbeginplay();
-	invoker.weaponstatus[UNMS_MAG]=0;
+	super.postbeginplay();
+	weaponstatus[UNMS_MAG]=0;
 	}
 }
 
