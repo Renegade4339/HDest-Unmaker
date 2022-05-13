@@ -113,7 +113,8 @@ super.postbeginplay();
 
 	states{
 	spawn:
-		TNT1 A 1 nodelay A_Look();
+		TNT1 A 0 nodelay{if(target)setstatelabel("see");}
+		TNT1 A  A_Look();
 		stop;
 
 	see:
@@ -162,6 +163,7 @@ super.postbeginplay();
 	states{
 	spawn:
 		TNT1 A 0 nodelay{shotsleft=random(5,40);}
+		TNT1 A 0{if(target)setstatelabel("see");}
 		TNT1 A 1 A_Look();
 		stop;
 
@@ -884,14 +886,12 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		BOS4 M 6;
 		BOS4 M 0 A_Jump(192,"CastDownMeteors");
 		BOS4 M 0{
-		binvulnerable=true;
-		bnopain=true;
-		bnoblood=true;
 		castingarmageddon=true;
 		let meteor = spawn("MeteorSpawner",pos,ALLOW_REPLACE);
 		if(meteor){
 				meteor.master=self;
 				tracer=meteor;
+				meteor.target=target;
 				A_GiveInventory("SpellSuccessSignal",1);
 				setstatelabel("ArmageddonSpawnConfirmation");
 				}
@@ -960,6 +960,7 @@ if(ticsforloop3>105)setstatelabel("MissilePiss2");
 		if(meteor2){
 				meteor2.master=self;
 				tracer=meteor2;
+				meteor2.target=target;
 				A_GiveInventory("SpellSuccessSignal",1);
 				setstatelabel("ArmageddonSpawnConfirmation2");
 				}
