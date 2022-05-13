@@ -2,4 +2,7 @@ GameInfo
 {
 	AddEventHandlers = "HDUnmakerSpawner1Handler"
 	AddEventHandlers = "HDUnmakerSpawner2Handler"
+	AddEventHandlers = "HDUnmakerSpawner3Handler"
+	AddEventHandlers = "HDUnmakerSpawner4Handler"
+	AddEventHandlers = "HDUnmakerSpawner5Handler"
 }
