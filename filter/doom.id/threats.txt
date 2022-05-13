@@ -2,10 +2,31 @@ Oh god
 
 Threat 1:1 PERISH
 Threat 1:2 DIE
-Threat 1:3 DIE DIE DIE DIE DIE DIE DIE DIE/DIE DIE DIE DIE DIE DIE DIE/DIE DIE DIE DIE DIE DIE DIE
+Threat 1:3 DIE DIE DIE DIE DIE DIE DIE DIE/DIE DIE DIE DIE DIE DIE DIE DIE/DIE DIE DIE DIE DIE DIE DIE DIE/DIE DIE DIE DIE DIE DIE DIE DIE
 Threat 1:4 THERE IS NO ESCAPE
-Threat 1:5 THERE IS NO ESCAPE THERE IS NO ESCAPE THERE IS NO ESCAPE THERE IS NO ESCAPE/THERE IS NO ESCAPE THERE IS NO ESCAPE THERE IS NO ESCAPE/THERE IS NO ESCAPE THERE IS NO ESCAPE THERE IS NO ESCAPE
+Threat 1:5 THERE IS NO ESCAPE THERE IS NO ESCAPE THERE IS NO ESCAPE THERE IS NO ESCAPE/THERE IS NO ESCAPE THERE IS NO ESCAPE THERE IS NO ESCAPE THERE IS NO ESCAPE/THERE IS NO ESCAPE THERE IS NO ESCAPE THERE IS NO ESCAPE THERE IS NO ESCAPE
 Threat 1:6 it hurts
 Threat 1:7 it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts/it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts/it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts/it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts
 Threat 1:8 IT HURTS
 Threat 1:9 IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS/IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS/IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS/IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS IT HURTS
+Threat 1:10 die
+Threat 1:11 cease functioning
+Threat 1:12 perish
+Threat 1:13 i hate you
+Threat 1:14 you die
+Threat 1:15 error
+Threat 1:16 blood
+Threat 1:17 no
+Threat 1:18 prepare for The Great Consequence
+Threat 1:19 we know where you are
+Threat 1:20 we are a vast force of the forgotten
+Threat 1:21 you humans are weak
+Threat 1:22 you don't know who you are facing with
+Threat 1:23 weak
+Threat 1:24 useless
+Threat 1:25 you are facing your imminent doom
+Threat 1:26 there is nowhere to hide
+Threat 1:27 29cj299ck2oc92k#)&!#)39_(
+Threat 1:28 ... ..- ..-. ..-. . .-. / .. -. / .... . .-.. .-..
+Threat 1:29 ERROR: UNKNOWN COMMUNICATION
+Threat 1:30 00000000000000000000/00000000000000000000/00000000000000000000/00000000000000000000
