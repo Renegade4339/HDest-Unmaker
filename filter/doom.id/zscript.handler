@@ -15,27 +15,11 @@ class HDUnmakerSpawner1Handler : EventHandler
 				if (random[itemgrand]() <= 4)
 				{
 					e.Replacement = "HDUnmakerSpawnerAR";
-				}else
-				if (random[itemgrand]() <= 2)
-				{
-					e.Replacement = "HDOrangeDemonKey";
-				}else
-				if (random[itemgrand]() <= 2)
-				{
-					e.Replacement = "HDPurpleDemonKey";
-				}else
-				if (random[itemgrand]() <= 2)
-				{
-					e.Replacement = "HDCyanDemonKey";
-				}else
-				if (random[itemgrand]() <= 2)
-				{
-					e.Replacement = "HDUnmakerEmpty";
 				}
 				break;
 		}
 	}
-	}
+}
 
 class HDUnmakerSpawner2Handler : EventHandler
 {
@@ -48,19 +32,94 @@ class HDUnmakerSpawner2Handler : EventHandler
 
 		switch (e.Replacement.GetClassName())
 		{
+			case 'RedSphere':
+				if (random[itemgrand]() <= 2)
+				{
+					e.Replacement = "HDOrangeDemonKey";
+				}
+				break;
 			case 'BFG9K':
 				if (random[itemgrand]() <= 1)
 				{
 					e.Replacement = "HDOrangeDemonKey";
-				}else
+				}
+				break;
+		}
+	}
+}
+
+class HDUnmakerSpawner3Handler : EventHandler
+{
+	override void CheckReplacement(ReplaceEvent e)
+	{
+		if (!e.Replacement)
+		{
+			return;
+		}
+
+		switch (e.Replacement.GetClassName())
+		{
+			case 'RedSphere':
+				if (random[itemgrand]() <= 2)
+				{
+					e.Replacement = "HDPurpleDemonKey";
+				}
+				break;
+			case 'BFG9K':
 				if (random[itemgrand]() <= 1)
 				{
 					e.Replacement = "HDPurpleDemonKey";
-				}else
+				}
+				break;
+		}
+	}
+}
+
+class HDUnmakerSpawner4Handler : EventHandler
+{
+	override void CheckReplacement(ReplaceEvent e)
+	{
+		if (!e.Replacement)
+		{
+			return;
+		}
+
+		switch (e.Replacement.GetClassName())
+		{
+			case 'RedSphere':
+				if (random[itemgrand]() <= 2)
+				{
+					e.Replacement = "HDCyanDemonKey";
+				}
+				break;
+			case 'BFG9K':
 				if (random[itemgrand]() <= 1)
 				{
 					e.Replacement = "HDCyanDemonKey";
-				}else
+				}
+				break;
+		}
+	}
+}
+
+class HDUnmakerSpawner5Handler : EventHandler
+{
+	override void CheckReplacement(ReplaceEvent e)
+	{
+		if (!e.Replacement)
+		{
+			return;
+		}
+
+		switch (e.Replacement.GetClassName())
+		{
+			case 'RedSphere':
+				if (random[itemgrand]() <= 2)
+				{
+					e.Replacement = "HDUnmakerEmpty";
+				}
+				break;
+			case 'BFG9K':
 				if (random[itemgrand]() <= 1)
 				{
 					e.Replacement = "HDUnmakerEmpty";
@@ -68,4 +127,4 @@ class HDUnmakerSpawner2Handler : EventHandler
 				break;
 		}
 	}
-	}
+}
