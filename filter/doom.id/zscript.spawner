@@ -9,7 +9,7 @@ class UnmadeRifleman:ReallyDeadRifleman{
 
 class HDUnmakerSpawnerAR:IdleDummy{
 	states{
-		SpawnArchon:
+		Spawn:
 			tnt1 a 1 nodelay{
 				let corpse = spawn("UnmadeRifleman",pos,ALLOW_REPLACE);
 				if(corpse){
