@@ -18,15 +18,15 @@ class HDUnmakerSpawner1Handler : EventHandler
 				}else
 				if (random[itemgrand]() <= 2)
 				{
-					e.Replacement = "HDUnmakerSpawnerGL";
+					e.Replacement = "HDOrangeDemonKey";
 				}else
 				if (random[itemgrand]() <= 2)
 				{
-					e.Replacement = "HDUnmakerSpawnerPR";
+					e.Replacement = "HDPurpleDemonKey";
 				}else
 				if (random[itemgrand]() <= 2)
 				{
-					e.Replacement = "HDUnmakerSpawnerLU";
+					e.Replacement = "HDCyanDemonKey";
 				}else
 				if (random[itemgrand]() <= 2)
 				{
@@ -51,15 +51,15 @@ class HDUnmakerSpawner2Handler : EventHandler
 			case 'BFG9K':
 				if (random[itemgrand]() <= 1)
 				{
-					e.Replacement = "HDUnmakerSpawnerGL";
+					e.Replacement = "HDOrangeDemonKey";
 				}else
 				if (random[itemgrand]() <= 1)
 				{
-					e.Replacement = "HDUnmakerSpawnerPR";
+					e.Replacement = "HDPurpleDemonKey";
 				}else
 				if (random[itemgrand]() <= 1)
 				{
-					e.Replacement = "HDUnmakerSpawnerLU";
+					e.Replacement = "HDCyanDemonKey";
 				}else
 				if (random[itemgrand]() <= 1)
 				{
