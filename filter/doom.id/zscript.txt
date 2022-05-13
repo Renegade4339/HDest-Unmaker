@@ -904,15 +904,15 @@ class HDUnmaker:HDWeapon{
 				ALLOW_REPLACE);
 				if(archon){
 				if(countinv("UnmakerUpgrade1Icon")){
-			archon.gluttony=true;
+			archon.A_GiveInventory("UnmakerUpgrade1Icon");
 			A_TakeInventory("UnmakerUpgrade1Icon",1);
 		}	
 				if(countinv("UnmakerUpgrade2Icon")){
-			archon.pride=true;
+			archon.A_GiveInventory("UnmakerUpgrade2Icon");
 			A_TakeInventory("UnmakerUpgrade2Icon",1);
 		}	
 				if(countinv("UnmakerUpgrade3Icon")){
-			archon.lust=true;
+			archon.A_GiveInventory("UnmakerUpgrade3Icon");
 			A_TakeInventory("UnmakerUpgrade3Icon",1);
 			}	
 		}	
