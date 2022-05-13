@@ -10,7 +10,7 @@ class UnmadeRifleman:ReallyDeadRifleman{
 class HDUnmakerSpawner1:IdleDummy{
 	states{
 	spawn:
-	tnt1 a 0 a_jump(128,"orange","purple","cyan","SpawnArchon");
+	tnt1 a 0 nodelay a_jump(128,"orange","purple","cyan","SpawnArchon");
 	unmaker:
 	tnt1 a 0 a_spawnitemex("HDUnmaker",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
 	stop;
