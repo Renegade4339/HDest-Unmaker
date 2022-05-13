@@ -7,15 +7,10 @@ class UnmadeRifleman:ReallyDeadRifleman{
 	}
 }
 
-class HDUnmakerSpawnerUN:IdleDummy{
-	states{
-	spawn:
-	tnt1 a 1 nodelay{
-		hdweapon unmaker=null;
-		unmaker = spawn("HDUnmaker",pos,ALLOW_REPLACE);
-		if(unmaker)unmaker.weaponstatus[UNMS_MAG]=0;
-		}
-	stop;
+class HDUnmakerEmpty:HDUnmaker{
+	override void postbeginplay(){
+	suepr.postbeginplay();
+	invoker.weaponstatus[UNMS_MAG]=0;
 	}
 }
 
