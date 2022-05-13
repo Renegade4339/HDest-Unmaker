@@ -613,15 +613,15 @@ class BaronUnmaker:PainMonster{
 		super.postbeginplay();
 		resize(0.95,1.05);
 		pissleft=2000; //piss tank.
-		if(countinv("UnmakerUpgrade1Icon"){
+		if(countinv("UnmakerUpgrade1Icon")){
 		gluttony=true;
 		A_TakeInventory("UnmakerUpgrade1Icon");
 		}
-		if(countinv("UnmakerUpgrade2Icon"){
+		if(countinv("UnmakerUpgrade2Icon")){
 		pride=true;
 		A_TakeInventory("UnmakerUpgrade2Icon");
 		}
-		if(countinv("UnmakerUpgrade3Icon"){
+		if(countinv("UnmakerUpgrade3Icon")){
 		lust=true;
 		A_TakeInventory("UnmakerUpgrade3Icon");
 		}
