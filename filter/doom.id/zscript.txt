@@ -1640,6 +1640,13 @@ enum unmakerstatus{
 
 #include "archon.zs"
 
+class HDUnmakerEmpty:HDUnmaker{
+	override void postbeginplay(){
+	suepr.postbeginplay();
+	invoker.weaponstatus[UNMS_MAG]=0;
+	}
+}
+
 class HarbingerSoul2:HDMobBase replaces HarbingerSoul{
 int tick;
 	default{
