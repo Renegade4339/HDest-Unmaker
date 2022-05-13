@@ -3,7 +3,7 @@
 class HDUnmakerSpawner1:IdleDummy{
 	states{
 	spawn:
-	tnt1 a 0 a_jump(128,"orange","purple","cyan");
+	tnt1 a 0 a_jump(128,"orange","purple","cyan","SpawnArchon");
 	unmaker:
 	tnt1 a 0 a_spawnitemex("HDUnmaker",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
 	stop;
@@ -20,10 +20,42 @@ class HDUnmakerSpawner1:IdleDummy{
 	tnt1 a 0 a_spawnitemex("HDCyanDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
 	stop;
 
-	SpawnSomethingElse:
-	tnt1 a 0 a_spawnitemex("RedSphere",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+	SpawnArchon:
+	tnt1 a 0{
+		let corpse = spawn("ReallyDeadRifleman",pos,ALLOW_REPLACE);
+		if(corpse){
+		corpse.bodydamage+=10000;
+		let archon = spawn("BaronUnmaker",corpse.pos,ALLOW_REPLACE);
+			if(archon){
+			archon.translation=corpse.translation;
+			if(!random(0,1))archon.A_GiveInventory("UnmakerUpgrade1Icon",1);
+			if(!random(0,3))archon.A_GiveInventory("UnmakerUpgrade2Icon",1);
+			if(!random(0,7))archon.A_GiveInventory("UnmakerUpgrade3Icon",1);
+			}
+		}
+		a_spawnitemex("SquadSummoner",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+		}
 	stop;
 	}
 }
 
-class HDUnmakerSpawner2:HDUnmakerSpawner1{}
+class HDUnmakerSpawner2:HDUnmakerSpawner1{
+	states{
+		SpawnArchon:
+			tnt1 a 0{
+				let corpse = spawn("ReallyDeadRifleman",pos,ALLOW_REPLACE);
+				if(corpse){
+				corpse.bodydamage+=10000;
+				let archon = spawn("BaronUnmaker",corpse.pos,ALLOW_REPLACE);
+					if(archon){
+					archon.translation=corpse.translation;
+					if(!random(0,1))archon.A_GiveInventory("UnmakerUpgrade1Icon",1);
+					if(!random(0,3))archon.A_GiveInventory("UnmakerUpgrade2Icon",1);
+					if(!random(0,7))archon.A_GiveInventory("UnmakerUpgrade3Icon",1);
+					}
+				}
+				a_spawnitemex("BFG9K",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
+			}
+	stop;
+	}
+}
