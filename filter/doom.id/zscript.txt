@@ -228,7 +228,7 @@ class HDPurpleDemonKey:HDDemonKeyBase{
 
 	use:
 		---- A 0 A_JumpIfInventory(invoker.keytype,1,"incap");
-		---- A 0 A_JumpIfInventory("HDUnmaker",1,"check");
+		---- A 0 A_JumpIfInventory("HDUnmaker",1,"givekey");
 		goto incap;
 
 	check:
@@ -254,7 +254,7 @@ class HDCyanDemonKey:HDDemonKeyBase{
 
 	use:
 		---- A 0 A_JumpIfInventory(invoker.keytype,1,"incap");
-		---- A 0 A_JumpIfInventory("HDUnmaker",1,"check");
+		---- A 0 A_JumpIfInventory("HDUnmaker",1,"givekey");
 		goto incap;
 
 //gee, you think that giving yourself UnmakerUpgrade2Icon and trying to activate the cyan demon key works?
@@ -903,6 +903,7 @@ class HDUnmaker:HDWeapon{
 				let archon = spawn("BaronUnmaker",pos,
 				ALLOW_REPLACE);
 				if(archon){
+				archon.translation=translation;
 				if(countinv("UnmakerUpgrade1Icon")){
 			archon.A_GiveInventory("UnmakerUpgrade1Icon");
 			A_TakeInventory("UnmakerUpgrade1Icon",1);
