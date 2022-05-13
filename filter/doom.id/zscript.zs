@@ -114,7 +114,7 @@ super.postbeginplay();
 	states{
 	spawn:
 		TNT1 A 0 nodelay{if(target)setstatelabel("see");}
-		TNT1 A  A_Look();
+		TNT1 A 1 A_Look();
 		stop;
 
 	see:
