@@ -7,37 +7,14 @@ class UnmadeRifleman:ReallyDeadRifleman{
 	}
 }
 
-class HDUnmakerSpawnerUN:HDWeapon{
+class HDUnmakerSpawnerUN:IdleDummy{
 	states{
 	spawn:
 	tnt1 a 1 nodelay{
-		let unmaker = spawn("HDUnmaker",pos,ALLOW_REPLACE);
+		hdweapon unmaker=null;
+		unmaker = spawn("HDUnmaker",pos,ALLOW_REPLACE);
 		if(unmaker)unmaker.weaponstatus[UNMS_MAG]=0;
 		}
-	stop;
-	}
-}
-
-class HDUnmakerSpawnerGL:IdleDummy{
-	states{
-	spawn:
-	tnt1 a 1 nodelay a_spawnitemex("HDOrangeDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
-	stop;
-	}
-}
-
-class HDUnmakerSpawnerPR:IdleDummy{
-	states{
-	spawn:
-	tnt1 a 1 nodelay a_spawnitemex("HDPurpleDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
-	stop;
-	}
-}
-
-class HDUnmakerSpawnerLU:IdleDummy{
-	states{
-	spawn:
-	tnt1 a 1 nodelay a_spawnitemex("HDCyanDemonKey",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERAMBUSHFLAG|SXF_TRANSFERSPECIAL|SXF_NOCHECKPOSITION);
 	stop;
 	}
 }
