@@ -893,7 +893,7 @@ class HDUnmaker:HDWeapon{
 				);
 		}
 			A_Quake(3,26,0,220,"none");
-	    destroy();
+	    invoker.destroy();
 		}
 		goto ready;
 	
