@@ -116,13 +116,13 @@ class HDUnmakerSpawner5Handler : EventHandler
 			case 'RedSphere':
 				if (random[itemgrand]() <= 2)
 				{
-					e.Replacement = "HDUnmakerEmpty";
+					e.Replacement = "HDUnmaker";
 				}
 				break;
 			case 'BFG9K':
 				if (random[itemgrand]() <= 1)
 				{
-					e.Replacement = "HDUnmakerEmpty";
+					e.Replacement = "HDUnmaker";
 				}
 				break;
 		}
