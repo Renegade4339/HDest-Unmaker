@@ -13,9 +13,11 @@ class HDUnmakerSpawnerAR:IdleDummy{
 			tnt1 a 1 nodelay{
 				let corpse = spawn("UnmadeRifleman",pos,ALLOW_REPLACE);
 				if(corpse){
+				corpse.A_SetFriendly(bfriendly);
 				let archon = spawn("BaronUnmaker",corpse.pos,ALLOW_REPLACE);
 					if(archon){
 					archon.translation=corpse.translation;
+					archon.A_SetFriendly(bfriendly);
 					if(!random(0,1))archon.A_GiveInventory("UnmakerUpgrade1Icon",1);
 					if(!random(0,3))archon.A_GiveInventory("UnmakerUpgrade2Icon",1);
 					if(!random(0,7))archon.A_GiveInventory("UnmakerUpgrade3Icon",1);
