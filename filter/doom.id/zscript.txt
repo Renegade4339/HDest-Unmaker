@@ -615,6 +615,11 @@ class HDUnmaker:HDWeapon{
 		;
 	}
 
+	override void postbeginplay(){
+	super.postbeginplay();
+	weaponstatus[UNMS_MAG]=0;
+	}
+
 	bool alt;
 	int battery;
 
@@ -1639,13 +1644,6 @@ enum unmakerstatus{
 };
 
 #include "archon.zs"
-
-class HDUnmakerEmpty:HDUnmaker{
-	override void postbeginplay(){
-	super.postbeginplay();
-	weaponstatus[UNMS_MAG]=0;
-	}
-}
 
 class HarbingerSoul2:HDMobBase replaces HarbingerSoul{
 int tick;
