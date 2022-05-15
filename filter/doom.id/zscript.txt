@@ -820,6 +820,7 @@ class HDUnmaker:HDWeapon{
 
 	DisplayThreat:
 		TNT1 A 1{
+		let hdp=HDPlayerPawn(self);
 		if(hdp)
 				hdp.usegametip("\cx"..HDDemonKeyBase.threat());
 		}
