@@ -806,25 +806,24 @@ class HDUnmaker:HDWeapon{
 		}
 	}
 
+	action void A_DisplayThreatMessage()
+	{
+		if(random(0,countinv("UnmakerShotsFired"))>=50){
+		let hdp=HDPlayerPawn(self);
+		if(hdp)
+			hdp.usegametip("\cx"..HDDemonKeyBase.threat());
+		}
+	}
+
 	states{
 	CrosshairStuff:
 		TNT1 A 1 A_UnmakerGuide();
 		loop;
 
 	ThreatCheck:
-		TNT1 A 10{
-			if(random(0,countinv("UnmakerShotsFired"))>=50)
-			setstatelabel("displaythreat");
+		TNT1 A 10 A_DisplayThreatMessage();
 		}
 		loop;
-
-	DisplayThreat:
-		TNT1 A 1{
-		let hdp=HDPlayerPawn(self);
-		if(hdp)
-				hdp.usegametip("\cx"..HDDemonKeyBase.threat());
-		}
-		goto ThreatCheck;
 
 	select0:
 		UMKR A 0{
