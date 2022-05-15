@@ -822,7 +822,6 @@ class HDUnmaker:HDWeapon{
 
 	ThreatCheck:
 		TNT1 A 10 A_DisplayThreatMessage();
-		}
 		loop;
 
 	select0:
