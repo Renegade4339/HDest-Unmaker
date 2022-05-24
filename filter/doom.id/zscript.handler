@@ -1,5 +1,28 @@
 version "4.6"
 
+class HDUnmakerHDoomDRMCheck : EventHandler
+{
+	override void PostUiTick()
+	{
+		if ( sahd || plhd ) ThrowAbortException("why the fuck are you loading this with \ctHDoom\cg?;
+	}
+
+	override void WorldLoaded( WorldEvent e )
+	{
+		sahd = false;
+		plhd = false;
+		// detect HDoom "fun" actor and/or weapon
+		// because no horny.
+		for ( int i=0; i<AllActorClasses.size(); i++ )
+		{
+			if ( AllActorClasses[i].GetClassName() == "SexActor" )
+				sahd = true;
+			else if ( AllActorClasses[i].GetClassName() == "HDoomPlayer" )
+				plhd = true;
+		}
+	}
+}
+
 class HDUnmakerSpawner1Handler : EventHandler
 {
 	override void CheckReplacement(ReplaceEvent e)
