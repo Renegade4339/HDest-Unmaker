@@ -5,4 +5,5 @@ GameInfo
 	AddEventHandlers = "HDUnmakerSpawner3Handler"
 	AddEventHandlers = "HDUnmakerSpawner4Handler"
 	AddEventHandlers = "HDUnmakerSpawner5Handler"
+	AddEventHandlers = "HDUnmakerHDoomDRMCheck"
 }
