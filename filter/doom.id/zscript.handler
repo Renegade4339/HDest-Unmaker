@@ -2,6 +2,9 @@ version "4.6"
 
 class HDUnmakerHDoomDRMCheck : EventHandler
 {
+
+	bool sahd, plhd;
+
 	override void PostUiTick()
 	{
 		if ( sahd || plhd ) ThrowAbortException("why the fuck are you loading this with \ctHDoom\cg?");
