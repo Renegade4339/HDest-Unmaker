@@ -11,7 +11,7 @@ class HDUnmakerHDoomDRMCheck : EventHandler
 	{
 		sahd = false;
 		plhd = false;
-		// detect HDoom "fun" actor and/or weapon
+		// detect HDoom "fun" actor or weapon
 		// because no horny.
 		for ( int i=0; i<AllActorClasses.size(); i++ )
 		{
