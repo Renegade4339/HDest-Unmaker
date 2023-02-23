@@ -2252,9 +2252,25 @@ Class BlankPuffUnmaker : Actor
 /*
 THE DEMON KEYS
 
-The Artifacts of Demonic origin. Each 3 keys represent one of the three Seven Deadly Sins: Gluttony, Pride, and Lust. According to reports of a classified division of UAC, trying to use them in the wrong order and/or don't have the Unmaker will result in the keys sending electric shocks strong enough to incapacitate a person almost immediately. Using them appropriately however, some people who used them heard threats coming from voices of the non-existent. They were known to power up The Unmaker and unlock its potential, but also bringing consequences with them.
+The Artifacts of Demonic origin. Each 3 keys represent
+one of the three Seven Deadly Sins: Gluttony, Pride, and Lust.
+According to reports of a classified division of UAC, trying
+to use them while don't have the Unmaker will result in the keys
+sending electric shocks strong enough to incapacitate a person almost
+immediately. Using them appropriately however, some people who used them
+heard threats coming from voices of the non-existent. They were known to
+power up The Unmaker and unlock its potential, but also bringing consequences
+with them.
 
 THE UNMAKER
 
-The Weapon of Hell itself. The curse of human and demonkind alike. The Bane of The Tyrant's Existence. It is forged from Demons who posed an extreme threat from their own kind. Scriptures from where it was extracted from says that it's capable of destroying whatever it is in its way, hence its name. However, it isn't an excuse to be too cocky from the weapon. A grim note said that whoever overuses the weapon will suffer the consequences of The Unmaker, which turn any soul, regardless of species into the Archon of Hell, a demon forged from Unmaker, indicating that the Unmaker's curse is complete.
+The Weapon of Hell itself. The curse of human and demonkind alike.
+The Bane of The Tyrant's Existence. It is forged from Demons who
+posed an extreme threat from their own kind. Scriptures from where
+it was extracted from says that it's capable of destroying whatever it is
+in its way, hence its name. However, it isn't an excuse to be too cocky from
+the weapon. A grim note said that whoever overuses the weapon will suffer the
+Wrath of The Unmaker, which turn any soul, regardless of species into
+the Archon of Hell, a demon forged from Unmaker, indicating that the Unmaker's
+curse is complete.
 */
