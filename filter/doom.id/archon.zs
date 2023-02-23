@@ -1310,5 +1310,10 @@ class ArchonBlur:HDActor{
 /*
 ARCHON OF HELL
 
-Legends say that a powerful demonic nobility will come out from the user who used the Unmaker for too long. Not even the demons themselves can withstand an Archon's power, for they possess the powers of the Unmaker itself. Who knows when they'll appear but one thing's for sure: They may be extremely dangerous to engage one.
+An extremely formidable demon made with various demons mangled together
+with the Unmaker transposing alongside a user who used it for too long.
+They appeared in the scriptures of the site where the Unmaker is found.
+According to the writings, they are one of the most feared demons of all
+hellkind can muster against for they possess the ultimate power of the cursed
+weapon.
 */
